@@ -1,12 +1,10 @@
 {
-  "name": "fragments-convert-poc",
+  "name": "bim-fragments-converter-service",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Clean Node.js POC for IFC to Fragments conversion benchmarks.",
+  "description": "IFC to Fragments conversion and validation service scripts.",
   "scripts": {
-    "serve": "node server/static-server.js",
-    "serve:lan": "node -e \"process.env.HOST='0.0.0.0'; import('./server/static-server.js')\"",
     "convert": "node src/convert-ifc-to-fragments.js",
     "convert:full": "node src/convert-ifc-to-fragments.js --full-properties",
     "convert:8g": "node --max-old-space-size=8192 src/convert-ifc-to-fragments.js",
@@ -18,7 +16,6 @@
   },
   "dependencies": {
     "@thatopen/fragments": "3.4.5",
-    "three": "0.182.0",
     "web-ifc": "0.0.77"
   }
 }

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8">
@@ -13,44 +13,44 @@
             <div class="mark" aria-hidden="true"></div>
             <div>
                 <h1>BIM Viewer MVP</h1>
-                <p>Three.js + Fragments 模型树、构件选择与属性验证</p>
+                <p>Three.js + Fragments 妯″瀷鏍戙€佹瀯浠堕€夋嫨涓庡睘鎬ч獙璇?/p>
             </div>
         </div>
 
         <div class="loadbar">
             <label class="filePicker">
-                <span>选择 .frag</span>
+                <span>閫夋嫨 .frag</span>
                 <input id="fragFile" type="file" accept=".frag">
             </label>
-            <input id="fragUrl" class="pathInput" type="text" value="../output/Building-Architecture.frag" aria-label="模型路径">
-            <button id="loadUrlBtn" class="primaryBtn" type="button">加载</button>
+            <input id="fragUrl" class="pathInput" type="text" value="" placeholder="http://127.0.0.1:5175/models/model.frag" aria-label="妯″瀷璺緞">
+            <button id="loadUrlBtn" class="primaryBtn" type="button">鍔犺浇</button>
         </div>
 
-        <div class="viewTools" aria-label="视图工具">
-            <button class="iconBtn" id="viewIsoBtn" type="button" title="等轴测">ISO</button>
-            <button class="iconBtn" id="viewTopBtn" type="button" title="顶视图">TOP</button>
-            <button class="iconBtn" id="viewFrontBtn" type="button" title="前视图">FRT</button>
-            <button class="iconBtn" id="fitBtn" type="button" title="适配模型" disabled>FIT</button>
-            <button class="iconBtn" id="fullscreenBtn" type="button" title="全屏">FUL</button>
+        <div class="viewTools" aria-label="瑙嗗浘宸ュ叿">
+            <button class="iconBtn" id="viewIsoBtn" type="button" title="绛夎酱娴?>ISO</button>
+            <button class="iconBtn" id="viewTopBtn" type="button" title="椤惰鍥?>TOP</button>
+            <button class="iconBtn" id="viewFrontBtn" type="button" title="鍓嶈鍥?>FRT</button>
+            <button class="iconBtn" id="fitBtn" type="button" title="閫傞厤妯″瀷" disabled>FIT</button>
+            <button class="iconBtn" id="fullscreenBtn" type="button" title="鍏ㄥ睆">FUL</button>
         </div>
 
         <section class="panelBlock modelSummary">
-            <div class="blockTitle">模型状态</div>
+            <div class="blockTitle">妯″瀷鐘舵€?/div>
             <div class="stats">
                 <div>
-                    <span>状态</span>
+                    <span>鐘舵€?/span>
                     <strong id="status">Ready</strong>
                 </div>
                 <div>
-                    <span>文件</span>
+                    <span>鏂囦欢</span>
                     <strong id="fileStat">-</strong>
                 </div>
                 <div>
-                    <span>加载</span>
+                    <span>鍔犺浇</span>
                     <strong id="loadStat">-</strong>
                 </div>
                 <div>
-                    <span>构件</span>
+                    <span>鏋勪欢</span>
                     <strong id="itemStat">-</strong>
                 </div>
             </div>
@@ -58,55 +58,55 @@
 
         <section class="panelBlock treeBlock">
             <div class="blockHeader">
-                <div class="blockTitle">模型树</div>
-                <button id="expandTreeBtn" class="smallBtn" type="button" disabled>展开</button>
+                <div class="blockTitle">妯″瀷鏍?/div>
+                <button id="expandTreeBtn" class="smallBtn" type="button" disabled>灞曞紑</button>
             </div>
-            <div class="treeTabs" role="tablist" aria-label="模型树分类">
+            <div class="treeTabs" role="tablist" aria-label="妯″瀷鏍戝垎绫?>
                 <button class="treeTab active" type="button" data-tree-tab="models">models</button>
                 <button class="treeTab" type="button" data-tree-tab="objects">objects</button>
                 <button class="treeTab" type="button" data-tree-tab="classes">classes</button>
                 <button class="treeTab" type="button" data-tree-tab="storeys">storeys</button>
             </div>
-            <div id="treeEmpty" class="emptyState">加载模型后展示空间结构</div>
+            <div id="treeEmpty" class="emptyState">鍔犺浇妯″瀷鍚庡睍绀虹┖闂寸粨鏋?/div>
             <div id="modelTree" class="tree" role="tree"></div>
         </section>
 
         <section class="panelBlock selectedBlock">
-            <div class="blockTitle">构件操作</div>
+            <div class="blockTitle">鏋勪欢鎿嶄綔</div>
             <div class="selectionStatus">
-                <span id="selectedCategory">未选择构件</span>
+                <span id="selectedCategory">鏈€夋嫨鏋勪欢</span>
                 <strong id="selectedId">-</strong>
             </div>
             <div class="actionsGrid">
-                <button id="locateBtn" type="button" disabled>定位</button>
-                <button id="hideBtn" type="button" disabled>隐藏</button>
-                <button id="isolateBtn" type="button" disabled>隔离</button>
-                <button id="showAllBtn" type="button" disabled>全部显示</button>
-                <button id="colorBtn" type="button" disabled>着色</button>
-                <button id="resetColorBtn" type="button" disabled>重置颜色</button>
+                <button id="locateBtn" type="button" disabled>瀹氫綅</button>
+                <button id="hideBtn" type="button" disabled>闅愯棌</button>
+                <button id="isolateBtn" type="button" disabled>闅旂</button>
+                <button id="showAllBtn" type="button" disabled>鍏ㄩ儴鏄剧ず</button>
+                <button id="colorBtn" type="button" disabled>鐫€鑹?/button>
+                <button id="resetColorBtn" type="button" disabled>閲嶇疆棰滆壊</button>
             </div>
             <label class="rangeRow">
-                <span>透明度</span>
+                <span>閫忔槑搴?/span>
                 <input id="opacityInput" type="range" min="0.12" max="1" step="0.02" value="1" disabled>
                 <strong id="opacityValue">100%</strong>
             </label>
-            <div class="toolSubTitle">视图与选择</div>
+            <div class="toolSubTitle">瑙嗗浘涓庨€夋嫨</div>
             <div class="actionsGrid compactGrid">
-                <button id="viewBackBtn" type="button">后视图</button>
-                <button id="viewLeftBtn" type="button">左视图</button>
-                <button id="viewRightBtn" type="button">右视图</button>
-                <button id="viewBottomBtn" type="button">底视图</button>
-                <button id="boxSelectBtn" type="button" disabled>框选</button>
-                <button id="snapshotBtn" type="button">快照</button>
-                <button id="saveViewBtn" type="button">保存视点</button>
-                <button id="restoreViewBtn" type="button" disabled>恢复视点</button>
+                <button id="viewBackBtn" type="button">鍚庤鍥?/button>
+                <button id="viewLeftBtn" type="button">宸﹁鍥?/button>
+                <button id="viewRightBtn" type="button">鍙宠鍥?/button>
+                <button id="viewBottomBtn" type="button">搴曡鍥?/button>
+                <button id="boxSelectBtn" type="button" disabled>妗嗛€?/button>
+                <button id="snapshotBtn" type="button">蹇収</button>
+                <button id="saveViewBtn" type="button">淇濆瓨瑙嗙偣</button>
+                <button id="restoreViewBtn" type="button" disabled>鎭㈠瑙嗙偣</button>
             </div>
         </section>
 
         <section class="panelBlock propsBlock">
             <div class="blockHeader">
-                <div class="blockTitle">基础信息</div>
-                <button id="refreshPropsBtn" class="smallBtn" type="button" disabled>刷新</button>
+                <div class="blockTitle">鍩虹淇℃伅</div>
+                <button id="refreshPropsBtn" class="smallBtn" type="button" disabled>鍒锋柊</button>
             </div>
             <dl id="basicProps" class="propsList">
                 <div>
@@ -125,15 +125,15 @@
         </section>
 
         <section class="panelBlock attrsBlock">
-            <div class="blockTitle">属性与材质</div>
-            <div id="attributeEmpty" class="emptyState">选择构件后展示 Fragments 可读取的属性</div>
+            <div class="blockTitle">灞炴€т笌鏉愯川</div>
+            <div id="attributeEmpty" class="emptyState">閫夋嫨鏋勪欢鍚庡睍绀?Fragments 鍙鍙栫殑灞炴€?/div>
             <div id="attributeTable" class="attributeTable"></div>
         </section>
 
         <section class="panelBlock logBlock">
             <div class="blockHeader">
-                <div class="blockTitle">运行日志</div>
-                <button id="clearLogBtn" class="smallBtn" type="button">清空</button>
+                <div class="blockTitle">杩愯鏃ュ織</div>
+                <button id="clearLogBtn" class="smallBtn" type="button">娓呯┖</button>
             </div>
             <pre id="log"></pre>
         </section>
@@ -145,20 +145,20 @@
         <div id="selectionRect" class="selectionRect" hidden></div>
         <div class="viewportHud">
             <div>
-                <span>选中</span>
+                <span>閫変腑</span>
                 <strong id="selectedHud">-</strong>
             </div>
             <div>
-                <span>操作</span>
-                <strong id="modeHud">浏览</strong>
+                <span>鎿嶄綔</span>
+                <strong id="modeHud">娴忚</strong>
             </div>
         </div>
         <div id="contextMenu" class="contextMenu" hidden>
-            <button type="button" data-menu-action="locate">定位</button>
-            <button type="button" data-menu-action="isolate">隔离</button>
-            <button type="button" data-menu-action="hide">隐藏</button>
-            <button type="button" data-menu-action="color">着色</button>
-            <button type="button" data-menu-action="showAll">全部显示</button>
+            <button type="button" data-menu-action="locate">瀹氫綅</button>
+            <button type="button" data-menu-action="isolate">闅旂</button>
+            <button type="button" data-menu-action="hide">闅愯棌</button>
+            <button type="button" data-menu-action="color">鐫€鑹?/button>
+            <button type="button" data-menu-action="showAll">鍏ㄩ儴鏄剧ず</button>
         </div>
     </section>
 </main>
@@ -177,3 +177,4 @@
 <script type="module" src="./main-mvp.js"></script>
 </body>
 </html>
+
