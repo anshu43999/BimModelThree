@@ -1,0 +1,563 @@
+:root {
+    color-scheme: dark;
+    --bg: #0e1112;
+    --panel: rgba(18, 22, 24, 0.94);
+    --panel-solid: #151a1d;
+    --line: rgba(255, 255, 255, 0.11);
+    --line-strong: rgba(255, 255, 255, 0.2);
+    --text: #eef3f4;
+    --muted: #91a0a4;
+    --quiet: #657377;
+    --accent: #36d399;
+    --accent-2: #d8b45d;
+    --danger: #ff7068;
+    --shadow: rgba(0, 0, 0, 0.46);
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+    touch-action: manipulation;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button {
+    min-height: 42px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text);
+    cursor: pointer;
+}
+
+button:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+button:disabled {
+    color: var(--quiet);
+    opacity: 0.55;
+}
+
+input[type="text"] {
+    width: 100%;
+    min-height: 44px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    padding: 0 12px;
+    background: #0d1112;
+    color: var(--text);
+}
+
+.mobileApp {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    background: var(--bg);
+}
+
+.mobileViewport {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        #0b0e0f;
+    background-size: 42px 42px;
+}
+
+#viewerCanvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+}
+
+.topBar {
+    position: absolute;
+    top: max(10px, env(safe-area-inset-top));
+    left: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    min-height: 52px;
+    padding: 8px 8px 8px 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: rgba(12, 15, 16, 0.76);
+    box-shadow: 0 14px 34px var(--shadow);
+    backdrop-filter: blur(12px);
+    z-index: 5;
+}
+
+.brandText {
+    display: grid;
+    min-width: 0;
+    gap: 2px;
+}
+
+.brandText strong {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0;
+}
+
+.brandText span {
+    overflow: hidden;
+    color: var(--muted);
+    font-size: 11px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.topActions {
+    display: flex;
+    gap: 7px;
+    flex-shrink: 0;
+}
+
+.roundBtn {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    min-width: 72px;
+    height: 36px;
+    min-height: 36px;
+    border: 1px solid var(--line-strong);
+    border-radius: 7px;
+    padding: 0 10px;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.roundBtn input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+}
+
+.primaryRoundBtn {
+    min-width: 82px;
+    border-color: rgba(54, 211, 153, 0.76);
+    background: rgba(54, 211, 153, 0.16);
+    color: #e8fff5;
+}
+
+.modelHud {
+    position: absolute;
+    top: calc(max(10px, env(safe-area-inset-top)) + 64px);
+    left: 10px;
+    right: 10px;
+    display: grid;
+    grid-template-columns: 1fr 72px 72px;
+    gap: 8px;
+    z-index: 4;
+}
+
+.modelHud div {
+    min-width: 0;
+    padding: 8px 9px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: rgba(11, 14, 15, 0.66);
+    backdrop-filter: blur(8px);
+}
+
+.modelHud span {
+    display: block;
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.modelHud strong {
+    display: block;
+    margin-top: 2px;
+    overflow: hidden;
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.quickTools {
+    position: absolute;
+    right: 10px;
+    bottom: calc(206px + env(safe-area-inset-bottom));
+    display: grid;
+    gap: 8px;
+    z-index: 4;
+}
+
+.quickTools button {
+    width: 48px;
+    min-height: 42px;
+    border-color: var(--line-strong);
+    background: rgba(16, 20, 21, 0.78);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.bottomSheet {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 190px;
+    padding: 8px 10px calc(10px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--line);
+    border-radius: 12px 12px 0 0;
+    background: var(--panel);
+    box-shadow: 0 -18px 44px var(--shadow);
+    backdrop-filter: blur(16px);
+    z-index: 6;
+    transition: height 180ms ease;
+}
+
+.bottomSheet.expanded {
+    height: min(68vh, 560px);
+}
+
+.sheetHandle {
+    width: 42px;
+    height: 4px;
+    margin: 0 auto 8px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.24);
+}
+
+.sheetTabs,
+.treeTabs {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: 6px;
+}
+
+.sheetTabs button,
+.treeTabs button {
+    min-height: 34px;
+    border-radius: 6px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.sheetTabs button.active,
+.treeTabs button.active {
+    border-color: rgba(54, 211, 153, 0.62);
+    color: var(--text);
+    background: rgba(54, 211, 153, 0.13);
+}
+
+.sheetBody {
+    height: calc(100% - 52px);
+    min-height: 0;
+    overflow: hidden;
+    padding-top: 8px;
+}
+
+.sheetPane {
+    display: none;
+    height: 100%;
+    min-height: 0;
+    overflow: auto;
+    touch-action: pan-y;
+}
+
+.sheetPane.active {
+    display: block;
+}
+
+.emptyState {
+    padding: 14px;
+    border: 1px dashed var(--line);
+    border-radius: 7px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.mobileStartPanel {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 10px;
+    padding: 12px;
+    border: 1px solid rgba(54, 211, 153, 0.35);
+    border-radius: 8px;
+    background: rgba(54, 211, 153, 0.08);
+}
+
+.mobileStartPanel strong {
+    font-size: 14px;
+}
+
+.mobileStartPanel span {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+.startActions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.startBtn {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 42px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.startBtn input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+}
+
+.primaryStartBtn {
+    border-color: rgba(54, 211, 153, 0.76);
+    background: rgba(54, 211, 153, 0.16);
+}
+
+.propsList {
+    display: grid;
+    gap: 7px;
+    margin: 0;
+}
+
+.propsList div {
+    display: grid;
+    grid-template-columns: 92px minmax(0, 1fr);
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.propsList dt {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.propsList dd {
+    margin: 0;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    color: var(--text);
+    font-size: 12px;
+}
+
+.attributeList {
+    display: grid;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.attributeRow {
+    display: grid;
+    grid-template-columns: minmax(80px, 38%) minmax(0, 1fr);
+    gap: 8px;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    font-size: 11px;
+}
+
+.attributeKey {
+    color: var(--muted);
+    overflow-wrap: anywhere;
+}
+
+.attributeValue {
+    color: #dbe5e5;
+    overflow-wrap: anywhere;
+}
+
+.treeList {
+    display: grid;
+    gap: 5px;
+    padding-top: 8px;
+}
+
+.treeNode {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    align-items: center;
+    min-height: 38px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    padding: 8px 9px;
+    background: rgba(255, 255, 255, 0.035);
+    text-align: left;
+}
+
+.treeNode.active {
+    border-color: rgba(54, 211, 153, 0.76);
+    background: rgba(54, 211, 153, 0.11);
+}
+
+.treeNode span {
+    min-width: 0;
+    overflow: hidden;
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.treeNode small {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.toolGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.rangeRow {
+    display: grid;
+    grid-template-columns: 58px minmax(0, 1fr) 46px;
+    gap: 8px;
+    align-items: center;
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.rangeRow input {
+    width: 100%;
+}
+
+.rangeRow strong {
+    color: var(--text);
+    text-align: right;
+}
+
+pre {
+    min-height: 120px;
+    margin: 0;
+    overflow: auto;
+    color: #cbd6d7;
+    font-size: 11px;
+    line-height: 1.45;
+    white-space: pre-wrap;
+}
+
+.overlaySheet {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+}
+
+.sheetScrim {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.38);
+}
+
+.loadPanel {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: calc(10px + env(safe-area-inset-bottom));
+    padding: 8px 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--panel-solid);
+    box-shadow: 0 22px 52px var(--shadow);
+}
+
+.sheetHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.sheetHeader div {
+    display: grid;
+    gap: 2px;
+}
+
+.sheetHeader strong {
+    font-size: 15px;
+}
+
+.sheetHeader span {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.textBtn {
+    min-height: 34px;
+    border: 0;
+    padding: 0 4px;
+    background: transparent;
+    color: var(--accent);
+}
+
+.loadForm {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 88px;
+    gap: 8px;
+}
+
+.primaryBtn {
+    border-color: rgba(54, 211, 153, 0.78);
+    background: rgba(54, 211, 153, 0.16);
+    color: #dff9ef;
+    font-weight: 700;
+}
+
+@media (orientation: landscape) and (max-height: 540px) {
+    .bottomSheet {
+        left: auto;
+        width: min(420px, 44vw);
+        height: calc(100vh - 20px);
+        right: 10px;
+        bottom: 10px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+    }
+
+    .bottomSheet.expanded {
+        height: calc(100vh - 20px);
+    }
+
+    .quickTools {
+        right: calc(min(420px, 44vw) + 20px);
+        bottom: 18px;
+    }
+}

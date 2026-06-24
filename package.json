@@ -1,0 +1,24 @@
+{
+  "name": "fragments-convert-poc",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Clean Node.js POC for IFC to Fragments conversion benchmarks.",
+  "scripts": {
+    "serve": "node server/static-server.js",
+    "serve:lan": "node -e \"process.env.HOST='0.0.0.0'; import('./server/static-server.js')\"",
+    "convert": "node src/convert-ifc-to-fragments.js",
+    "convert:full": "node src/convert-ifc-to-fragments.js --full-properties",
+    "convert:8g": "node --max-old-space-size=8192 src/convert-ifc-to-fragments.js",
+    "convert:full:8g": "node --max-old-space-size=8192 src/convert-ifc-to-fragments.js --full-properties",
+    "convert:16g": "node --max-old-space-size=16384 src/convert-ifc-to-fragments.js",
+    "validate:t003-t004": "node src/validate-t003-t004.js",
+    "validate:t003-t004:8g": "node --max-old-space-size=8192 src/validate-t003-t004.js",
+    "validate:t003-t004:16g": "node --max-old-space-size=16384 src/validate-t003-t004.js"
+  },
+  "dependencies": {
+    "@thatopen/fragments": "3.4.5",
+    "three": "0.182.0",
+    "web-ifc": "0.0.77"
+  }
+}
