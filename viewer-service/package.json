@@ -6,7 +6,8 @@
   "description": "Standalone Three.js + Fragments BIM viewer service.",
   "scripts": {
     "serve": "node server/static-server.js",
-    "serve:lan": "node -e \"process.env.HOST='0.0.0.0'; import('./server/static-server.js')\""
+    "serve:lan": "node -e \"process.env.HOST='0.0.0.0'; import('./server/static-server.js')\"",
+    "test:tool-modes": "node --test --test-isolation=none tests/tool-mode-controller.test.mjs tests/camera-control-manager.test.mjs tests/free-inspect-controller.test.mjs tests/path-roam-core.test.mjs tests/path-roam-document-controller.test.mjs tests/path-roam-playback-controller.test.mjs tests/viewport-panel-manager.test.mjs tests/model-registry.test.mjs tests/semantic-index-core.test.mjs tests/semantic-index-controller.test.mjs tests/semantic-index-cache.test.mjs tests/semantic-search-controller.test.mjs tests/tree-query-pager.test.mjs tests/version-compare-core.test.mjs tests/version-compare-controller.test.mjs tests/version-compare-task-controller.test.mjs tests/sdk-event-contract.test.mjs tests/sdk-integration-contract.test.mjs tests/embed-bridge.test.mjs tests/embed-client.test.mjs tests/runtime-embed-handlers.test.mjs tests/viewer-runtime-sdk.test.mjs"
   },
   "dependencies": {
     "@thatopen/fragments": "3.4.5",

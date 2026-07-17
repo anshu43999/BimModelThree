@@ -4,6 +4,8 @@ import {fileURLToPath} from "node:url";
 import {mkdir, writeFile, readFile, open} from "node:fs/promises";
 import {readSync} from "node:fs";
 import {IfcImporter} from "@thatopen/fragments";
+import {buildModelManifest, writeModelManifest} from "./manifest-writer.js";
+import {buildConversionReport, writeConversionReport} from "./conversion-report-writer.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, "..");
@@ -48,7 +50,7 @@ function log(message, data) {
     console.log(`[${new Date().toISOString()}] ${line}`);
 }
 
-function parseArgs(argv) {
+export function parseArgs(argv) {
     const flags = new Set(argv.filter((arg) => arg.startsWith("--")));
     const positional = argv.filter((arg) => !arg.startsWith("--"));
     return {
@@ -57,6 +59,41 @@ function parseArgs(argv) {
         raw: flags.has("--raw"),
         bytesMode: flags.has("--bytes"),
         fullProperties: flags.has("--full-properties")
+    };
+}
+
+export async function writeConversionFailureReport(error, args) {
+    if (!args.input) {
+        return null;
+    }
+
+    const inputPath = path.resolve(args.input);
+    const inputStats = fs.existsSync(inputPath) ? fs.statSync(inputPath) : null;
+    const outputPath = path.resolve(args.output || path.join(
+        projectRoot,
+        "output",
+        `${path.basename(inputPath, path.extname(inputPath))}.frag`
+    ));
+    const reportPath = path.join(path.dirname(outputPath), "conversion-report.json");
+    await mkdir(path.dirname(reportPath), {recursive: true});
+    const report = buildConversionReport({
+        inputPath,
+        outputPath,
+        inputStats,
+        status: "failed",
+        error,
+        args,
+        converter: {
+            name: "@thatopen/fragments"
+        },
+        memory: memorySnapshot()
+    });
+    await writeConversionReport(reportPath, report);
+    log("Conversion failure report write done", {report: reportPath});
+    return {
+        report,
+        reportPath,
+        outputPath
     };
 }
 
@@ -100,12 +137,18 @@ async function convertWithReadCallback(importer, inputPath, raw) {
     }
 }
 
-async function main() {
-    const args = parseArgs(process.argv.slice(2));
+export async function convertIfcToFragments(options = {}) {
+    const totalStarted = performance.now();
+    const args = {
+        input: options.input,
+        output: options.output,
+        raw: Boolean(options.raw),
+        bytesMode: Boolean(options.bytesMode),
+        fullProperties: Boolean(options.fullProperties)
+    };
 
     if (!args.input || args.input === "--help" || args.input === "-h") {
-        usage();
-        process.exit(args.input ? 0 : 1);
+        throw new Error("Input IFC path is required.");
     }
 
     const inputPath = path.resolve(args.input);
@@ -147,9 +190,10 @@ async function main() {
     const fragments = args.bytesMode
         ? await convertWithBytes(importer, inputPath, args.raw)
         : await convertWithReadCallback(importer, inputPath, args.raw);
+    const convertSeconds = seconds(convertStarted);
 
     log("Fragments conversion done", {
-        seconds: seconds(convertStarted),
+        seconds: convertSeconds,
         outputSizeMB: mb(fragments.byteLength),
         compressionRatio: Number((inputStats.size / fragments.byteLength).toFixed(2)),
         memory: memorySnapshot()
@@ -165,9 +209,73 @@ async function main() {
         outputSizeMB: mb(fragments.byteLength),
         memory: memorySnapshot()
     });
+
+    const outputStats = fs.statSync(outputPath);
+    const manifest = buildModelManifest({
+        inputPath,
+        outputPath,
+        inputStats,
+        outputStats,
+        args,
+        convertSeconds
+    });
+    const manifestPath = path.join(path.dirname(outputPath), "manifest.json");
+    const reportPath = path.join(path.dirname(outputPath), "conversion-report.json");
+    const report = buildConversionReport({
+        inputPath,
+        outputPath,
+        manifestPath,
+        inputStats,
+        outputStats,
+        convertSeconds,
+        totalSeconds: seconds(totalStarted),
+        status: "converted",
+        args,
+        converter: {
+            name: "@thatopen/fragments",
+            wasmPath
+        },
+        memory: memorySnapshot()
+    });
+
+    await writeModelManifest(manifestPath, manifest);
+    await writeConversionReport(reportPath, report);
+
+    log("Manifest write done", {
+        manifest: manifestPath,
+        report: reportPath
+    });
+
+    return {
+        inputPath,
+        outputPath,
+        manifestPath,
+        reportPath,
+        manifest,
+        report
+    };
 }
 
-main().catch((error) => {
-    console.error(error);
-    process.exit(1);
-});
+async function main() {
+    const args = parseArgs(process.argv.slice(2));
+
+    if (!args.input || args.input === "--help" || args.input === "-h") {
+        usage();
+        process.exit(args.input ? 0 : 1);
+    }
+
+    await convertIfcToFragments(args);
+}
+
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+    main().catch(async (error) => {
+        console.error(error);
+        try {
+            const args = parseArgs(process.argv.slice(2));
+            await writeConversionFailureReport(error, args);
+        } catch (reportError) {
+            console.error("Failed to write conversion failure report", reportError);
+        }
+        process.exit(1);
+    });
+}

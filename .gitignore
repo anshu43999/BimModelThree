@@ -6,3 +6,17 @@ converter-service/node_modules/
 viewer-service/node_modules/
 converter-service/output/
 converter-service/models/
+converter-service/oputput/
+
+# Local analysis and generated reports
+.tmp/
+outputs/
+parse-result-*.md
+
+# ifc-to-glb-converter (Python)
+ifc-to-glb-converter/.venv/
+ifc-to-glb-converter/venv/
+ifc-to-glb-converter/output/
+ifc-to-glb-converter/*.glb
+ifc-to-glb-converter/__pycache__/
+ifc-to-glb-converter/*.egg-info/

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>批注编辑、筛选与模型气泡</title>
+    <link rel="stylesheet" href="./common.css">
+</head>
+<body>
+<main class="page">
+    <div class="viewer"><canvas id="viewerCanvas"></canvas></div>
+    <div id="overlay" class="overlay"></div>
+    <section class="panel">
+        <div class="title">
+            <div class="eyebrow">REQ-006</div>
+            <h1>批注编辑、筛选与模型气泡</h1>
+            <p>点击构件后新增批注，模型上只显示批注气泡。</p>
+        </div>
+        <div class="statusTabs" role="tablist" aria-label="批注状态筛选">
+            <button type="button" class="active" data-status-filter="all">全部</button>
+            <button type="button" data-status-filter="open">打开</button>
+            <button type="button" data-status-filter="processing">处理中</button>
+            <button type="button" data-status-filter="resolved">已解决</button>
+            <button type="button" data-status-filter="closed">已关闭</button>
+        </div>
+        <select id="noteStatus">
+            <option value="open">打开</option>
+            <option value="processing">处理中</option>
+            <option value="resolved">已解决</option>
+            <option value="closed">已关闭</option>
+        </select>
+        <textarea id="noteText">这里是一条模型批注</textarea>
+        <div class="actions">
+            <button id="addNoteBtn" type="button">新增批注</button>
+            <button id="cancelEditBtn" type="button" hidden>取消编辑</button>
+            <button id="clearBtn" type="button">清除</button>
+        </div>
+        <div id="selectedInfo" class="status">请先点击模型选择构件</div>
+        <div id="annotationList" class="miniList"></div>
+        <div id="status" class="status">准备加载</div>
+    </section>
+</main>
+<script type="importmap">
+{"imports":{"three":"../../node_modules/three/build/three.module.js","three/addons/":"../../node_modules/three/examples/jsm/","three/examples/jsm/":"../../node_modules/three/examples/jsm/","@thatopen/fragments":"../../node_modules/@thatopen/fragments/dist/index.mjs","web-ifc":"../../node_modules/web-ifc/web-ifc-api.js"}}
+</script>
+<script type="module" src="./annotation.js"></script>
+</body>
+</html>

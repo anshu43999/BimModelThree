@@ -1,0 +1,22 @@
+[project]
+name = "ifc-to-glb-converter"
+version = "0.1.0"
+description = "Convert IFC building models to glTF Binary (.glb)"
+requires-python = ">=3.11"
+dependencies = [
+    "ifcopenshell>=0.7.0",
+    "trimesh>=4.0.0",
+    "numpy>=1.24",
+    "typer>=0.9.0",
+    "pygltflib>=1.16",
+]
+
+[project.scripts]
+ifc-to-glb = "ifc_to_glb.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["ifc_to_glb*"]

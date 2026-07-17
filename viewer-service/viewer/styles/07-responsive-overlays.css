@@ -1,0 +1,218 @@
+/* Final responsive contract. Keep this module last in the cascade. */
+
+.viewport:has(.viewportPanelRail.hasOpenPanel) .viewportHud {
+    opacity: 0;
+    visibility: hidden;
+}
+
+@media (min-width: 1021px) and (max-width: 1280px) {
+    .twoColumnApp {
+        grid-template-columns: 220px minmax(0, 1fr) 280px;
+        gap: 8px;
+        padding: 8px;
+    }
+
+    .twoColumnApp .brand {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .twoColumnApp .loadbar {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    .twoColumnApp .modelSummary {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .twoColumnApp .modelManagerBlock {
+        grid-column: 1;
+        grid-row: 3;
+    }
+
+    .twoColumnApp .treeBlock {
+        grid-column: 1;
+        grid-row: 4 / 6;
+    }
+
+    .twoColumnApp > .viewport {
+        grid-column: 2;
+        grid-row: 2 / 6;
+    }
+
+    .rightInspectorDock {
+        grid-column: 3;
+        grid-row: 1 / 6;
+    }
+}
+
+@media (max-width: 1020px) {
+    body {
+        overflow: auto;
+    }
+
+    .twoColumnApp {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: repeat(7, auto);
+        gap: 8px;
+        width: 100%;
+        height: auto;
+        min-height: 100vh;
+        padding: 8px;
+        overflow: visible;
+    }
+
+    .twoColumnApp .brand,
+    .twoColumnApp .loadbar,
+    .twoColumnApp .modelSummary,
+    .twoColumnApp .modelManagerBlock,
+    .twoColumnApp .treeBlock,
+    .twoColumnApp > .viewport,
+    .rightInspectorDock {
+        grid-column: 1;
+        min-width: 0;
+    }
+
+    .twoColumnApp .brand {
+        grid-row: 1;
+    }
+
+    .twoColumnApp .loadbar {
+        grid-row: 2;
+    }
+
+    .twoColumnApp > .viewport {
+        grid-row: 3;
+        height: clamp(460px, 68vh, 760px);
+        min-height: 0;
+    }
+
+    .twoColumnApp .modelSummary {
+        grid-row: 4;
+    }
+
+    .twoColumnApp .modelManagerBlock {
+        grid-row: 5;
+    }
+
+    .twoColumnApp .treeBlock {
+        grid-row: 6;
+        min-height: 480px;
+    }
+
+    .rightInspectorDock {
+        grid-row: 7;
+        height: min(68vh, 620px);
+        min-height: 440px;
+    }
+}
+
+@media (max-width: 760px) {
+    .twoColumnApp {
+        padding: 6px;
+    }
+
+    .twoColumnApp > .viewport {
+        height: clamp(420px, 64svh, 680px);
+    }
+
+    .twoColumnApp .loadbar {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto;
+    }
+
+    .twoColumnApp .mainLoadbar,
+    .twoColumnApp .compareLoadbar,
+    .twoColumnApp .compareLoadbarStatus {
+        grid-column: 1;
+        grid-row: auto;
+    }
+
+    .viewportHud {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 5px;
+    }
+
+    .viewportHud > div {
+        min-width: 0;
+        max-width: none;
+        padding: 6px 7px;
+    }
+
+    .measureResultHud {
+        left: 10px;
+        right: 10px;
+        width: auto;
+        max-width: none;
+    }
+
+    .dualViewTitle,
+    .dualViewMeta {
+        max-width: calc(50% - 18px);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 520px) {
+    .twoColumnApp > .viewport {
+        height: max(400px, 68svh);
+    }
+
+    .twoColumnApp > .viewport .viewportViewTools {
+        gap: 4px;
+        padding: 5px;
+    }
+
+    .viewportToolDock {
+        max-height: 52%;
+    }
+
+    .viewportToolButtons,
+    .viewportBimToolGroup .viewportToolButtons {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .dualViewMeta {
+        display: none;
+    }
+
+    .rightInspectorHeader > div:first-child span {
+        display: none;
+    }
+
+    .rightInspectorHeader {
+        padding-inline: 8px;
+    }
+
+    .rightInspectorTabs {
+        padding-inline: 5px;
+    }
+
+    .workspaceDrawerHeader {
+        padding-inline: 10px;
+    }
+}
+
+@media (max-height: 700px) and (min-width: 1021px) {
+    .viewportPanelRail {
+        top: 72px;
+    }
+
+    .viewportToolDock {
+        top: 56px;
+        max-height: calc(100% - 120px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .workspaceDrawer,
+    .viewportToolDock {
+        animation: none;
+        transition: none;
+    }
+}

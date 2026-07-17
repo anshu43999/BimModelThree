@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>基础剖切</title>
+    <link rel="stylesheet" href="./common.css">
+</head>
+<body>
+<main class="page">
+    <div class="viewer"><canvas id="viewerCanvas"></canvas></div>
+    <section class="panel compact">
+        <div class="title">
+            <div class="eyebrow">REQ-008</div>
+            <h1>基础剖切</h1>
+            <p>只实现单剖切面、轴向切换、前后移动和清除。</p>
+        </div>
+        <select id="axisSelect">
+            <option value="x">X 轴</option>
+            <option value="y">Y 轴</option>
+            <option value="z">Z 轴</option>
+        </select>
+        <div class="actions">
+            <button id="enableBtn" type="button">开启剖切</button>
+            <button id="minusBtn" type="button">后移</button>
+            <button id="plusBtn" type="button">前移</button>
+            <button id="clearBtn" type="button">清除</button>
+        </div>
+        <div id="status" class="status">准备加载</div>
+    </section>
+</main>
+<script type="importmap">
+{"imports":{"three":"../../node_modules/three/build/three.module.js","three/addons/":"../../node_modules/three/examples/jsm/","three/examples/jsm/":"../../node_modules/three/examples/jsm/","@thatopen/fragments":"../../node_modules/@thatopen/fragments/dist/index.mjs","web-ifc":"../../node_modules/web-ifc/web-ifc-api.js"}}
+</script>
+<script type="module" src="./section.js"></script>
+</body>
+</html>

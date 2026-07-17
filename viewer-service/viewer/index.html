@@ -4,7 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Fragments BIM MVP Viewer</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./styles/01-foundation.css">
+    <link rel="stylesheet" href="./styles/02-viewer-core.css">
+    <link rel="stylesheet" href="./styles/03-workspace-drawers.css">
+    <link rel="stylesheet" href="./styles/04-feature-panels.css">
+    <link rel="stylesheet" href="./styles/05-layout.css">
+    <link rel="stylesheet" href="./styles/06-right-inspector.css">
+    <link rel="stylesheet" href="./styles/07-responsive-overlays.css">
+    <link rel="stylesheet" href="./styles/08-left-sidebar.css">
 </head>
 <body>
 <main class="app twoColumnApp">
@@ -13,155 +20,678 @@
             <div class="mark" aria-hidden="true"></div>
             <div>
                 <h1>BIM Viewer MVP</h1>
-                <p>Three.js + Fragments 妯″瀷鏍戙€佹瀯浠堕€夋嫨涓庡睘鎬ч獙璇?/p>
+                <p>Three.js + Fragments 模型树、构件选择与属性验证</p>
             </div>
         </div>
 
         <div class="loadbar">
-            <label class="filePicker">
-                <span>閫夋嫨 .frag</span>
-                <input id="fragFile" type="file" accept=".frag">
-            </label>
-            <input id="fragUrl" class="pathInput" type="text" value="" placeholder="http://127.0.0.1:5175/models/model.frag" aria-label="妯″瀷璺緞">
-            <button id="loadUrlBtn" class="primaryBtn" type="button">鍔犺浇</button>
-        </div>
-
-        <div class="viewTools" aria-label="瑙嗗浘宸ュ叿">
-            <button class="iconBtn" id="viewIsoBtn" type="button" title="绛夎酱娴?>ISO</button>
-            <button class="iconBtn" id="viewTopBtn" type="button" title="椤惰鍥?>TOP</button>
-            <button class="iconBtn" id="viewFrontBtn" type="button" title="鍓嶈鍥?>FRT</button>
-            <button class="iconBtn" id="fitBtn" type="button" title="閫傞厤妯″瀷" disabled>FIT</button>
-            <button class="iconBtn" id="fullscreenBtn" type="button" title="鍏ㄥ睆">FUL</button>
+            <div class="mainLoadbar">
+                <label class="filePicker">
+                    <span>选择 .frag</span>
+                    <input id="fragFile" type="file" accept=".frag">
+                </label>
+                <input id="fragUrl" class="pathInput" type="text" value="" placeholder="http://127.0.0.1:5175/models/model.frag" aria-label="模型路径">
+                <button id="loadUrlBtn" class="primaryBtn" type="button">加载</button>
+                <input id="manifestUrl" class="pathInput manifestInput" type="text" value="" placeholder="manifest.json URL" aria-label="模型 manifest 路径">
+                <button id="loadManifestBtn" class="primaryBtn secondaryBtn" type="button" title="加载 Manifest">加载</button>
+            </div>
+            <div class="compareLoadbar">
+                <div class="compareInputRow">
+                    <label class="filePicker compareFilePicker">
+                        <span>选择 .frag</span>
+                        <input id="compareFragFile" type="file" accept=".frag" disabled>
+                    </label>
+                    <input id="compareManifestUrl" class="pathInput compareManifestInput" type="text" placeholder="右侧版本 manifest URL" disabled>
+                    <button id="loadCompareModelBtn" class="primaryBtn secondaryBtn" type="button" disabled title="加载右侧版本">加载</button>
+                </div>
+                <div id="compareActionRow" class="compareActionRow" hidden>
+                    <button id="runVersionCompareBtn" class="smallBtn" type="button" disabled>对比</button>
+                    <button id="syncCompareViewBtn" class="smallBtn" type="button" disabled>联动</button>
+                    <button id="clearCompareModelBtn" class="smallBtn" type="button" disabled>清除</button>
+                </div>
+            </div>
+            <div id="versionCompareStatus" class="compareLoadbarStatus">加载主模型后可加载右侧版本</div>
         </div>
 
         <section class="panelBlock modelSummary">
-            <div class="blockTitle">妯″瀷鐘舵€?/div>
+            <div class="blockTitle">模型状态</div>
             <div class="stats">
-                <div>
-                    <span>鐘舵€?/span>
-                    <strong id="status">Ready</strong>
+                <div><span>状态</span><strong id="status">Ready</strong></div>
+                <div><span>文件</span><strong id="fileStat">-</strong></div>
+                <div><span>加载</span><strong id="loadStat">-</strong></div>
+                <div><span>构件</span><strong id="itemStat">-</strong></div>
+            </div>
+            <div class="miniPanel validationPanel">
+                <div class="miniPanelHeader">
+                    <span>模型验证</span>
+                    <div class="miniHeaderActions">
+                        <button id="runValidationBtn" class="smallBtn" type="button" disabled>运行</button>
+                        <button id="exportValidationBtn" class="smallBtn" type="button" disabled>导出</button>
+                    </div>
                 </div>
-                <div>
-                    <span>鏂囦欢</span>
-                    <strong id="fileStat">-</strong>
-                </div>
-                <div>
-                    <span>鍔犺浇</span>
-                    <strong id="loadStat">-</strong>
-                </div>
-                <div>
-                    <span>鏋勪欢</span>
-                    <strong id="itemStat">-</strong>
+                <div id="validationList" class="miniList validationList">
+                    <div class="miniEmpty">加载模型后可验证属性完整度与 ID 稳定性</div>
                 </div>
             </div>
         </section>
 
+        <section class="panelBlock modelManagerBlock">
+            <div class="blockHeader">
+                <div class="blockTitle">多模型管理</div>
+                <div class="blockActions">
+                    <span id="modelManagerCount" class="blockMeta">0 个模型</span>
+                    <button id="overlayModelsBtn" class="smallBtn" type="button" disabled>叠加</button>
+                    <button id="spreadModelsBtn" class="smallBtn" type="button" disabled>错开</button>
+                    <button id="resetModelsPlacementBtn" class="smallBtn" type="button" disabled>复位</button>
+                </div>
+            </div>
+            <div class="modelAppendForm">
+                <label class="filePicker compactFilePicker">
+                    <span>追加 .frag</span>
+                    <input id="appendFragFile" type="file" accept=".frag">
+                </label>
+                <input id="appendModelUrl" class="pathInput" type="text" placeholder="追加 frag URL">
+                <input id="appendManifestUrl" class="pathInput" type="text" placeholder="追加 manifest URL">
+                <button id="appendModelBtn" class="primaryBtn secondaryBtn" type="button">追加模型</button>
+            </div>
+            <div id="modelManagerList" class="miniList modelManagerList"></div>
+            <div id="modelManagerEmpty" class="emptyText">加载或追加模型后显示模型列表</div>
+        </section>
+
         <section class="panelBlock treeBlock">
             <div class="blockHeader">
-                <div class="blockTitle">妯″瀷鏍?/div>
-                <button id="expandTreeBtn" class="smallBtn" type="button" disabled>灞曞紑</button>
+                <div class="blockTitle">模型树</div>
+                <div class="blockActions">
+                    <button id="openTreeDialogBtn" class="smallBtn" type="button" disabled>详细树</button>
+                    <button id="expandTreeBtn" class="smallBtn" type="button" disabled>展开</button>
+                </div>
             </div>
-            <div class="treeTabs" role="tablist" aria-label="妯″瀷鏍戝垎绫?>
+            <div class="treeTabs" role="tablist" aria-label="模型树分类">
                 <button class="treeTab active" type="button" data-tree-tab="models">models</button>
                 <button class="treeTab" type="button" data-tree-tab="objects">objects</button>
                 <button class="treeTab" type="button" data-tree-tab="classes">classes</button>
                 <button class="treeTab" type="button" data-tree-tab="storeys">storeys</button>
             </div>
-            <div id="treeEmpty" class="emptyState">鍔犺浇妯″瀷鍚庡睍绀虹┖闂寸粨鏋?/div>
+            <div class="treeSearchPanel">
+                <div class="treeSearchRow">
+                    <input id="treeSearchInput" class="treeSearchInput" type="search" placeholder="搜索 entityName / localId / GlobalId / type" disabled>
+                    <button id="treeSearchClearBtn" class="smallBtn" type="button" disabled>清除</button>
+                </div>
+                <div id="treeSearchStatus" class="treeSearchStatus">加载模型后可搜索构件</div>
+            </div>
+            <div id="treeSearchResults" class="treeSearchResults" hidden></div>
+            <div id="treeEmpty" class="emptyState">加载模型后展示空间结构</div>
             <div id="modelTree" class="tree" role="tree"></div>
         </section>
 
-        <section class="panelBlock selectedBlock">
-            <div class="blockTitle">鏋勪欢鎿嶄綔</div>
+        <section class="rightInspectorDock" aria-labelledby="rightInspectorTitle">
+            <header class="rightInspectorHeader">
+                <div>
+                    <strong id="rightInspectorTitle">模型信息</strong>
+                    <span>构件操作、属性与版本差异</span>
+                </div>
+                <div class="rightInspectorHeaderActions">
+                    <button id="openWorkspaceDrawerBtn" class="smallBtn workspaceEntryBtn" type="button"
+                            aria-haspopup="dialog" aria-controls="workspaceDrawer" aria-expanded="false">业务</button>
+                    <button id="openSettingsDrawerBtn" class="smallBtn settingsEntryBtn" type="button"
+                            aria-haspopup="dialog" aria-controls="settingsDrawer" aria-expanded="false">设置</button>
+                </div>
+            </header>
+            <div class="rightInspectorTabs" role="tablist" aria-label="模型信息功能">
+                <button id="rightInspectorComponentTab" class="active" type="button" role="tab"
+                        aria-selected="true" aria-controls="rightInspectorComponentPanel"
+                        data-right-inspector-tab="component">构件</button>
+                <button id="rightInspectorBasicTab" type="button" role="tab"
+                        aria-selected="false" aria-controls="rightInspectorBasicPanel" tabindex="-1"
+                        data-right-inspector-tab="basic">基础</button>
+                <button id="rightInspectorAttributesTab" type="button" role="tab"
+                        aria-selected="false" aria-controls="rightInspectorAttributesPanel" tabindex="-1"
+                        data-right-inspector-tab="attributes">属性</button>
+                <button id="rightInspectorCompareTab" type="button" role="tab"
+                        aria-selected="false" aria-controls="rightInspectorComparePanel" tabindex="-1"
+                        data-right-inspector-tab="compare">对比</button>
+            </div>
+            <div class="rightInspectorBody">
+        <section id="rightInspectorComponentPanel" class="panelBlock selectedBlock rightInspectorPanel active"
+                 role="tabpanel" aria-labelledby="rightInspectorComponentTab" data-right-inspector-panel="component">
+            <div class="blockTitle">构件操作</div>
             <div class="selectionStatus">
-                <span id="selectedCategory">鏈€夋嫨鏋勪欢</span>
+                <span id="selectedCategory">未选择构件</span>
                 <strong id="selectedId">-</strong>
             </div>
             <div class="actionsGrid">
-                <button id="locateBtn" type="button" disabled>瀹氫綅</button>
-                <button id="hideBtn" type="button" disabled>闅愯棌</button>
-                <button id="isolateBtn" type="button" disabled>闅旂</button>
-                <button id="showAllBtn" type="button" disabled>鍏ㄩ儴鏄剧ず</button>
-                <button id="colorBtn" type="button" disabled>鐫€鑹?/button>
-                <button id="resetColorBtn" type="button" disabled>閲嶇疆棰滆壊</button>
+                <button id="locateBtn" type="button" disabled>定位</button>
+                <button id="hideBtn" type="button" disabled>隐藏</button>
+                <button id="isolateBtn" type="button" disabled>隔离</button>
+                <button id="showAllBtn" type="button" disabled>全部显示</button>
+                <button id="colorBtn" type="button" disabled>着色</button>
+                <button id="resetColorBtn" type="button" disabled>重置颜色</button>
             </div>
             <label class="rangeRow">
-                <span>閫忔槑搴?/span>
+                <span>透明度</span>
                 <input id="opacityInput" type="range" min="0.12" max="1" step="0.02" value="1" disabled>
                 <strong id="opacityValue">100%</strong>
             </label>
-            <div class="toolSubTitle">瑙嗗浘涓庨€夋嫨</div>
-            <div class="actionsGrid compactGrid">
-                <button id="viewBackBtn" type="button">鍚庤鍥?/button>
-                <button id="viewLeftBtn" type="button">宸﹁鍥?/button>
-                <button id="viewRightBtn" type="button">鍙宠鍥?/button>
-                <button id="viewBottomBtn" type="button">搴曡鍥?/button>
-                <button id="boxSelectBtn" type="button" disabled>妗嗛€?/button>
-                <button id="snapshotBtn" type="button">蹇収</button>
-                <button id="saveViewBtn" type="button">淇濆瓨瑙嗙偣</button>
-                <button id="restoreViewBtn" type="button" disabled>鎭㈠瑙嗙偣</button>
-            </div>
         </section>
 
-        <section class="panelBlock propsBlock">
+        <section id="rightInspectorBasicPanel" class="panelBlock propsBlock rightInspectorPanel" hidden
+                 role="tabpanel" aria-labelledby="rightInspectorBasicTab" data-right-inspector-panel="basic">
             <div class="blockHeader">
-                <div class="blockTitle">鍩虹淇℃伅</div>
-                <button id="refreshPropsBtn" class="smallBtn" type="button" disabled>鍒锋柊</button>
+                <div class="blockTitle">基础信息</div>
+                <div class="blockActions">
+                    <button id="refreshPropsBtn" class="smallBtn" type="button" disabled>刷新</button>
+                </div>
             </div>
             <dl id="basicProps" class="propsList">
-                <div>
-                    <dt>localId</dt>
-                    <dd>-</dd>
-                </div>
-                <div>
-                    <dt>GUID</dt>
-                    <dd>-</dd>
-                </div>
-                <div>
-                    <dt>Category</dt>
-                    <dd>-</dd>
-                </div>
+                <div><dt>localId</dt><dd>-</dd></div>
+                <div><dt>GUID</dt><dd>-</dd></div>
+                <div><dt>Category</dt><dd>-</dd></div>
             </dl>
+            <div id="workspaceDrawerOverlay" class="workspaceDrawerOverlay" hidden>
+                <section id="workspaceDrawer" class="workspaceDrawer" role="dialog" aria-modal="false" aria-labelledby="workspaceDrawerTitle">
+                    <header class="workspaceDrawerHeader">
+                        <div>
+                            <strong id="workspaceDrawerTitle">业务功能</strong>
+                            <span>视图与模型业务信息</span>
+                        </div>
+                        <button id="closeWorkspaceDrawerBtn" class="workspaceDrawerClose" type="button" title="关闭业务面板" aria-label="关闭业务面板">×</button>
+                    </header>
+                    <div class="workspaceDrawerTabs" role="tablist" aria-label="业务功能">
+                        <button id="workspaceViewsTab" class="active" type="button" role="tab" aria-selected="true"
+                                aria-controls="workspaceViewsPanel" data-workspace-tab="views">视图</button>
+                        <button id="workspaceZonesTab" type="button" role="tab" aria-selected="false" tabindex="-1"
+                                aria-controls="workspaceZonesPanel" data-workspace-tab="zones">分区</button>
+                        <button id="workspaceAnnotationsTab" type="button" role="tab" aria-selected="false" tabindex="-1"
+                                aria-controls="workspaceAnnotationsPanel" data-workspace-tab="annotations">批注</button>
+                        <button id="workspaceLabelsTab" type="button" role="tab" aria-selected="false" tabindex="-1"
+                                aria-controls="workspaceLabelsPanel" data-workspace-tab="labels">标签</button>
+                    </div>
+                    <div class="workspaceDrawerBody">
+            <div id="workspaceViewsPanel" class="miniPanel workspacePanel active" role="tabpanel"
+                 aria-labelledby="workspaceViewsTab" data-workspace-panel="views">
+                <div class="miniPanelHeader">
+                    <span>视图浏览器</span>
+                    <button id="saveViewStoreBtn" class="smallBtn" type="button" disabled>保存当前</button>
+                </div>
+                <input id="viewNameInput" class="miniInput" type="text" placeholder="视图名称" disabled>
+                <div class="miniControls viewControls">
+                    <input id="viewCategoryInput" class="miniInput" type="text" placeholder="分类，例如 审核 / 机电 / 问题" disabled>
+                    <select id="viewCategoryFilter" class="miniSelect" disabled>
+                        <option value="">全部分类</option>
+                    </select>
+                </div>
+                <div id="viewList" class="miniList">
+                    <div class="miniEmpty">暂无保存视图</div>
+                </div>
+            </div>
+            <div id="workspaceZonesPanel" class="miniPanel workspacePanel" role="tabpanel"
+                 aria-labelledby="workspaceZonesTab" data-workspace-panel="zones" hidden>
+                <div class="miniPanelHeader">
+                    <span>分区可视化</span>
+                    <button id="refreshZonesBtn" class="smallBtn" type="button" disabled>刷新</button>
+                </div>
+                <div class="miniControls viewControls">
+                    <select id="zoneModeSelect" class="miniSelect" disabled>
+                        <option value="storeys">楼层分区</option>
+                        <option value="classes">类型分区</option>
+                    </select>
+                    <button id="resetZonesBtn" class="smallBtn" type="button" disabled>恢复全部</button>
+                </div>
+                <div id="zoneList" class="miniList">
+                    <div class="miniEmpty">加载模型后显示分区</div>
+                </div>
+            </div>
+            <div id="workspaceAnnotationsPanel" class="miniPanel workspacePanel" role="tabpanel"
+                 aria-labelledby="workspaceAnnotationsTab" data-workspace-panel="annotations" hidden>
+                <div class="miniPanelHeader">
+                    <span>模型批注</span>
+                    <button id="createAnnotationBtn" class="smallBtn" type="button" disabled>新增</button>
+                </div>
+                <div class="miniControls">
+                    <select id="annotationScopeFilter" class="miniSelect" disabled>
+                        <option value="selected">当前构件</option>
+                        <option value="all">全部批注</option>
+                    </select>
+                    <select id="annotationStatusFilter" class="miniSelect" disabled>
+                        <option value="all">全部状态</option>
+                        <option value="open">打开</option>
+                        <option value="processing">处理中</option>
+                        <option value="resolved">已解决</option>
+                        <option value="closed">已关闭</option>
+                    </select>
+                    <select id="annotationStatusInput" class="miniSelect" disabled>
+                        <option value="open">打开</option>
+                        <option value="processing">处理中</option>
+                        <option value="resolved">已解决</option>
+                        <option value="closed">已关闭</option>
+                    </select>
+                    <select id="annotationPriorityInput" class="miniSelect" disabled>
+                        <option value="normal">普通</option>
+                        <option value="high">高</option>
+                        <option value="low">低</option>
+                    </select>
+                    <input id="annotationAssigneeInput" class="miniInput" type="text" placeholder="负责人" disabled>
+                    <select id="annotationPermissionInput" class="miniSelect" disabled>
+                        <option value="team">团队可编辑</option>
+                        <option value="owner">仅创建人</option>
+                        <option value="assignee">创建人/负责人</option>
+                    </select>
+                </div>
+                <textarea id="annotationInput" class="annotationInput" rows="2" placeholder="选择构件后输入批注内容" disabled></textarea>
+                <button id="cancelAnnotationEditBtn" class="smallBtn ghostMiniBtn" type="button" hidden>取消编辑</button>
+                <div id="annotationList" class="miniList">
+                    <div class="miniEmpty">暂无批注</div>
+                </div>
+            </div>
+            <div id="workspaceLabelsPanel" class="miniPanel workspacePanel" role="tabpanel"
+                 aria-labelledby="workspaceLabelsTab" data-workspace-panel="labels" hidden>
+                <div class="miniPanelHeader">
+                    <span>标签管理</span>
+                    <button id="createPersistentLabelBtn" class="smallBtn" type="button" disabled>新增</button>
+                </div>
+                <input id="labelTitleInput" class="miniInput" type="text" placeholder="选择构件后输入标签标题" disabled>
+                <button id="cancelLabelEditBtn" class="smallBtn ghostMiniBtn" type="button" hidden>取消编辑</button>
+                <div id="labelList" class="miniList">
+                    <div class="miniEmpty">暂无标签</div>
+                </div>
+            </div>
+                    </div>
+                </section>
+            </div>
+            <div id="settingsDrawerOverlay" class="workspaceDrawerOverlay settingsDrawerOverlay" hidden>
+                <section id="settingsDrawer" class="workspaceDrawer settingsDrawer" role="dialog" aria-modal="false"
+                         aria-labelledby="settingsDrawerTitle">
+                    <header class="workspaceDrawerHeader">
+                        <div>
+                            <strong id="settingsDrawerTitle">Viewer 设置</strong>
+                            <span>业务接口、本地配置与运行日志</span>
+                        </div>
+                        <button id="closeSettingsDrawerBtn" class="workspaceDrawerClose" type="button"
+                                title="关闭设置" aria-label="关闭设置">×</button>
+                    </header>
+                    <div class="workspaceDrawerTabs settingsDrawerTabs" role="tablist" aria-label="Viewer 设置">
+                        <button id="settingsBusinessTab" class="active" type="button" role="tab"
+                                aria-selected="true" aria-controls="settingsBusinessPanel"
+                                data-settings-tab="business">业务接口</button>
+                        <button id="settingsLogsTab" type="button" role="tab" aria-selected="false" tabindex="-1"
+                                aria-controls="settingsLogsPanel" data-settings-tab="logs">运行日志</button>
+                    </div>
+                    <div class="workspaceDrawerBody settingsDrawerBody">
+                        <div id="settingsBusinessPanel" class="miniPanel workspacePanel settingsPanel active"
+                             role="tabpanel" aria-labelledby="settingsBusinessTab" data-settings-panel="business">
+                            <div class="miniPanelHeader">
+                                <span>后端同步配置</span>
+                            </div>
+                            <select id="businessDataMode" class="miniSelect">
+                                <option value="local">本地模式</option>
+                                <option value="manual">手动同步</option>
+                                <option value="backend">后端优先</option>
+                            </select>
+                            <input id="businessDataBaseUrl" class="miniInput" type="text" placeholder="/api/business-data">
+                            <div class="businessContextGrid">
+                                <input id="businessTenantId" class="miniInput" type="text" placeholder="tenantId">
+                                <input id="businessProjectId" class="miniInput" type="text" placeholder="projectId">
+                                <input id="businessVersionId" class="miniInput" type="text" placeholder="versionId">
+                                <input id="businessCreatedBy" class="miniInput" type="text" placeholder="createdBy">
+                            </div>
+                            <label class="miniCheckRow businessAutoSyncRow">
+                                <input id="businessDataAutoSync" type="checkbox">
+                                <span>自动同步状态</span>
+                            </label>
+                            <label class="miniCheckRow businessAutoSyncRow">
+                                <input id="businessDataAutoPull" type="checkbox">
+                                <span>自动拉取状态</span>
+                            </label>
+                            <div class="miniControls businessSyncActions">
+                                <button id="pullBusinessDataBtn" class="smallBtn" type="button" disabled>拉取远端</button>
+                                <button id="pushBusinessDataBtn" class="smallBtn" type="button" disabled>推送本地</button>
+                                <button id="pushSnapshotDataBtn" class="smallBtn" type="button" disabled>推送快照</button>
+                            </div>
+                            <div id="businessDataStatus" class="businessDataStatus">未配置业务数据接口</div>
+                            <div id="businessSnapshotList" class="miniList businessSnapshotList">
+                                <div class="miniEmpty">拉取远端后显示快照记录</div>
+                            </div>
+                        </div>
+                        <div id="settingsLogsPanel" class="workspacePanel settingsPanel settingsLogsPanel" hidden
+                             role="tabpanel" aria-labelledby="settingsLogsTab" data-settings-panel="logs">
+                            <div class="blockHeader">
+                                <div class="blockTitle">运行日志</div>
+                                <button id="clearLogBtn" class="smallBtn" type="button">清空</button>
+                            </div>
+                            <pre id="log"></pre>
+                        </div>
+                    </div>
+                </section>
+            </div>
         </section>
 
-        <section class="panelBlock attrsBlock">
-            <div class="blockTitle">灞炴€т笌鏉愯川</div>
-            <div id="attributeEmpty" class="emptyState">閫夋嫨鏋勪欢鍚庡睍绀?Fragments 鍙鍙栫殑灞炴€?/div>
+        <section id="rightInspectorAttributesPanel" class="panelBlock attrsBlock rightInspectorPanel" hidden
+                 role="tabpanel" aria-labelledby="rightInspectorAttributesTab" data-right-inspector-panel="attributes">
+            <div class="blockTitle">属性与材质</div>
+            <div id="attributeEmpty" class="emptyState">选择构件后展示 Fragments 可读取的属性</div>
             <div id="attributeTable" class="attributeTable"></div>
         </section>
 
-        <section class="panelBlock logBlock">
-            <div class="blockHeader">
-                <div class="blockTitle">杩愯鏃ュ織</div>
-                <button id="clearLogBtn" class="smallBtn" type="button">娓呯┖</button>
+        <section id="rightInspectorComparePanel" class="panelBlock compareBlock rightInspectorPanel" hidden
+                 role="tabpanel" aria-labelledby="rightInspectorCompareTab" data-right-inspector-panel="compare">
+            <div class="blockTitle">版本差异</div>
+            <div id="versionComparePanel" class="miniPanel versionComparePanel" hidden>
+                <div class="miniPanelHeader">
+                    <span>对比结果</span>
+                    <span id="versionCompareLimitHint" class="miniHint">未对比</span>
+                </div>
+                <div id="versionCompareSummary" class="compareSummaryGrid">
+                    <div><span>相同</span><strong>-</strong></div>
+                    <div><span>变更</span><strong>-</strong></div>
+                    <div><span>左缺失</span><strong>-</strong></div>
+                    <div><span>右新增</span><strong>-</strong></div>
+                    <div><span>无 ID</span><strong>-</strong></div>
+                </div>
+                <div id="versionCompareFilters" class="compareFilterTabs" role="tablist" aria-label="版本差异筛选">
+                    <button class="active" type="button" data-version-compare-filter="all">全部</button>
+                    <button type="button" data-version-compare-filter="changed">变更</button>
+                    <button type="button" data-version-compare-filter="removed">左缺失</button>
+                    <button type="button" data-version-compare-filter="added">右新增</button>
+                    <button type="button" data-version-compare-filter="missing">无 ID</button>
+                </div>
+                <div id="versionCompareList" class="miniList compareDiffList">
+                    <div class="miniEmpty">加载两个版本并点击“对比”后显示差异</div>
+                </div>
             </div>
-            <pre id="log"></pre>
+            <div class="versionCompareEmpty">加载主版本和右侧版本后，在顶部点击“对比”。</div>
         </section>
+            </div>
+        </section>
+
     </aside>
 
     <section class="viewport">
         <canvas id="viewerCanvas"></canvas>
         <div class="crosshair" aria-hidden="true"></div>
         <div id="selectionRect" class="selectionRect" hidden></div>
+        <div id="viewerOverlay" class="viewerOverlay">
+            <div id="snapTypeHint" class="snapTypeHint" hidden></div>
+        </div>
+        <div id="measureResultHud" class="measureResultHud" hidden></div>
+        <div class="viewTools viewportViewTools" aria-label="视图工具">
+            <button class="iconBtn" id="viewIsoBtn" type="button" title="等轴测">ISO</button>
+            <button class="iconBtn" id="viewTopBtn" type="button" title="顶视图">TOP</button>
+            <button class="iconBtn" id="viewFrontBtn" type="button" title="前视图">FRT</button>
+            <button class="iconBtn" id="fitBtn" type="button" title="适配模型" disabled>FIT</button>
+            <button class="iconBtn" id="fullscreenBtn" type="button" title="全屏">FUL</button>
+        </div>
+        <button id="exitActiveToolBtn" class="exitActiveToolBtn" type="button" hidden
+                title="退出当前工具（Esc）" aria-label="退出当前工具">&times;</button>
+        <div id="dualViewGuide" class="dualViewGuide" hidden>
+            <div class="dualViewTitle">副视窗</div>
+            <div class="dualViewMeta">预览视角，不参与选择</div>
+        </div>
         <div class="viewportHud">
-            <div>
-                <span>閫変腑</span>
-                <strong id="selectedHud">-</strong>
+            <div><span>选中</span><strong id="selectedHud">-</strong></div>
+            <div><span>操作</span><strong id="modeHud">浏览</strong></div>
+            <div><span>工具</span><strong id="toolHud">-</strong></div>
+        </div>
+        <div id="viewportToolDock" class="viewportToolDock" aria-label="模型操作工具">
+            <button id="viewportToolDockToggle" class="viewportToolDockToggle" type="button" aria-expanded="true" title="向右收起工具栏">
+                <span aria-hidden="true">收起</span>
+            </button>
+            <div class="viewportToolDockBody">
+            <div class="viewportToolGroup">
+                <span class="viewportToolTitle">视图</span>
+                <div class="viewportToolButtons">
+                    <button id="viewBackBtn" type="button">后</button>
+                    <button id="viewLeftBtn" type="button">左</button>
+                    <button id="viewRightBtn" type="button">右</button>
+                    <button id="viewBottomBtn" type="button">底</button>
+                    <button id="boxSelectBtn" type="button" disabled>框选</button>
+                    <button id="snapshotBtn" type="button">快照</button>
+                    <button id="saveViewBtn" type="button">存视点</button>
+                    <button id="restoreViewBtn" type="button" disabled>恢复</button>
+                </div>
             </div>
-            <div>
-                <span>鎿嶄綔</span>
-                <strong id="modeHud">娴忚</strong>
+            <div class="viewportToolGroup">
+                <span class="viewportToolTitle">模式</span>
+                <div class="viewportToolButtons">
+                    <button id="roamBtn" type="button" disabled title="W/S 前后，A/D 左右，Shift 加速">巡检</button>
+                    <button id="pathRoamBtn" type="button" disabled>漫游</button>
+                    <button id="modelTransformBtn" type="button" disabled>变换</button>
+                    <button id="dualViewBtn" type="button" disabled>双视窗</button>
+                    <button id="syncDualViewBtn" type="button" disabled>同步</button>
+                    <button id="dualViewIsoBtn" type="button" disabled>副ISO</button>
+                    <button id="dualViewTopBtn" type="button" disabled>副TOP</button>
+                </div>
+                <label id="roamSpeedRow" class="roamSpeedRow viewportRoamSpeedRow" hidden>
+                    <span>步进</span>
+                    <input id="roamSpeedInput" type="range" min="0.2" max="3" step="0.1" value="0.2" disabled>
+                    <strong id="roamSpeedValue">0.2x</strong>
+                </label>
+                <label class="isolateModeRow viewportIsolateModeRow" hidden>
+                    <span>隔离方式</span>
+                    <select id="isolateModeSelect" disabled>
+                        <option value="hide">完全隐藏其他构件</option>
+                        <option value="dim">其他构件透明显示</option>
+                    </select>
+                </label>
+                <label class="isolateOpacityRow viewportIsolateOpacityRow" hidden>
+                    <span>隔离透明</span>
+                    <input id="isolateOpacityInput" type="range" min="5" max="95" step="5" value="35" disabled>
+                    <strong id="isolateOpacityValue">35%</strong>
+                </label>
+            </div>
+            <div class="viewportToolGroup viewportBimToolGroup">
+                <span class="viewportToolTitle">BIM</span>
+                <div class="viewportToolButtons">
+                    <button id="snapBtn" type="button" disabled>捕捉</button>
+                    <button id="measureBtn" type="button" disabled>测量</button>
+                    <button id="angleMeasureBtn" type="button" disabled>角度</button>
+                    <button id="areaMeasureBtn" type="button" disabled>面积</button>
+                    <button id="undoMeasureBtn" type="button" disabled>撤销</button>
+                    <button id="labelBtn" type="button" disabled>标签</button>
+                    <button id="sectionBtn" type="button" disabled>剖切</button>
+                    <button id="clearSectionBtn" type="button" disabled>清剖切</button>
+                    <button id="clearMeasureBtn" type="button" disabled>清测量</button>
+                    <button id="clearLabelBtn" type="button" disabled>清标签</button>
+                </div>
+                <div class="sectionCompactPanel viewportSectionPanel">
+                    <label class="sectionControlField">
+                        <span>剖切模式</span>
+                        <select id="sectionModeSelect" disabled>
+                            <option value="single-x">单面 X</option>
+                            <option value="single-y">单面 Y</option>
+                            <option value="single-z">单面 Z</option>
+                            <option value="multi">多剖切</option>
+                            <option value="box">剖切盒</option>
+                        </select>
+                    </label>
+                    <label class="sectionControlField">
+                        <span>当前切面</span>
+                        <select id="sectionPlaneSelect" disabled>
+                            <option value="0">切面 1</option>
+                        </select>
+                    </label>
+                </div>
+                <div id="areaMeasureHint" class="toolHint viewportToolHint" hidden>
+                    请按顺时针或逆时针沿边界选择面积点，不能交叉选点；至少 3 个点后双击完成面积。
+                </div>
+                <label class="sectionDragRow viewportSectionDragRow">
+                    <span>位置</span>
+                    <input id="sectionOffsetInput" type="range" min="-100" max="100" step="1" value="0" disabled>
+                    <strong id="sectionOffsetValue">0</strong>
+                </label>
+            </div>
             </div>
         </div>
+        <div id="viewportPanelRail" class="viewportPanelRail">
+        <div id="modelAssemblyPanel" class="modelAssemblyPanel" hidden aria-label="模型装配">
+            <div class="modelAssemblyHeader">
+                <strong>模型装配</strong>
+                <button id="closeModelTransformPanelBtn" type="button">关闭</button>
+            </div>
+            <div class="modelAssemblyTopRow">
+                <label class="modelTransformField">
+                    <span>模式</span>
+                    <select id="modelTransformModeSelect" disabled>
+                        <option value="translate">平移</option>
+                        <option value="rotate">旋转</option>
+                    </select>
+                </label>
+                <button id="resetModelTransformBtn" type="button" disabled>重置</button>
+            </div>
+            <div id="modelTransformStatus" class="modelTransformStatus">加载模型后可调整模型位置</div>
+            <div class="modelTransformNumeric">
+                <div class="modelTransformNumericTitle">位置</div>
+                <label><span>X</span><input data-model-transform-position="x" type="number" step="0.1" value="0" disabled></label>
+                <label><span>Y</span><input data-model-transform-position="y" type="number" step="0.1" value="0" disabled></label>
+                <label><span>Z</span><input data-model-transform-position="z" type="number" step="0.1" value="0" disabled></label>
+                <div class="modelTransformNumericTitle">旋转</div>
+                <label><span>X°</span><input data-model-transform-rotation="x" type="number" step="1" value="0" disabled></label>
+                <label><span>Y°</span><input data-model-transform-rotation="y" type="number" step="1" value="0" disabled></label>
+                <label><span>Z°</span><input data-model-transform-rotation="z" type="number" step="1" value="0" disabled></label>
+            </div>
+            <div class="modelTransformActions">
+                <button id="applyModelTransformValuesBtn" type="button" disabled>应用数值</button>
+                <button id="saveModelTransformBtn" type="button" disabled>保存</button>
+                <button id="restoreModelTransformBtn" type="button" disabled>恢复</button>
+            </div>
+        </div>
+        <div id="pathRoamPanel" class="pathRoamPanel" hidden aria-label="路径漫游">
+            <div class="pathRoamHeader">
+                <strong>路径漫游</strong>
+                <button id="closePathRoamPanelBtn" type="button">关闭</button>
+            </div>
+            <div class="pathRoamRouteControls">
+                <label>
+                    <span>方案</span>
+                    <select id="pathRoamRouteSelect" disabled></select>
+                </label>
+                <input id="pathRoamNameInput" type="text" placeholder="漫游方案名称" disabled>
+                <button id="newPathRoamRouteBtn" type="button" disabled>新建</button>
+                <button id="savePathRoamRouteBtn" type="button" disabled>保存</button>
+                <button id="deletePathRoamRouteBtn" type="button" disabled>删除</button>
+            </div>
+            <div class="pathRoamActions">
+                <button id="addPathPointBtn" type="button" disabled>添加路径点</button>
+                <button id="playPathRoamBtn" type="button" disabled>播放</button>
+                <button id="stopPathRoamBtn" type="button" disabled>停止</button>
+                <button id="clearPathRoamBtn" type="button" disabled>清空</button>
+            </div>
+            <label class="pathRoamSpeedRow">
+                <span>播放速度</span>
+                <input id="pathRoamSpeedInput" type="range" min="0.25" max="3" step="0.25" value="1" disabled>
+                <strong id="pathRoamSpeedValue">1.00x</strong>
+            </label>
+            <div id="pathRoamStatus" class="pathRoamStatus">加载模型后可记录路径点</div>
+            <div id="pathRoamList" class="pathRoamList">
+                <div class="pathRoamEmpty">暂无路径点</div>
+            </div>
+        </div>
+        <div id="bubbleToolPanel" class="bubbleToolPanel collapsed" aria-label="气泡显示与位置微调">
+            <button id="bubbleToolToggleBtn" class="bubbleToolToggle" type="button" aria-expanded="false">气泡</button>
+            <div class="bubbleToolContent">
+                <div class="bubbleToolHeader">
+                    <span>气泡工具</span>
+                    <button id="bubbleToolCollapseBtn" class="smallBtn" type="button">收起</button>
+                </div>
+                <label class="miniCheckRow bubbleToolCheck">
+                    <input id="showAllBubblesInput" type="checkbox" disabled>
+                    <span>显示全部气泡</span>
+                </label>
+                <label class="miniCheckRow bubbleToolCheck">
+                    <input id="bubbleClusterInput" type="checkbox" checked disabled>
+                    <span>气泡聚合</span>
+                </label>
+                <div id="bubbleClusterStatus" class="bubbleClusterStatus">加载模型后可聚合气泡</div>
+                <div class="bubbleStyleControls">
+                    <label>
+                        <span>气泡样式</span>
+                        <select id="bubbleStylePresetSelect">
+                            <option value="default">深色</option>
+                            <option value="blue">蓝色</option>
+                            <option value="warning">警告</option>
+                            <option value="light">浅色</option>
+                            <option value="contrast">高对比</option>
+                            <option value="custom">自定义</option>
+                        </select>
+                    </label>
+                    <div class="bubbleCustomGrid">
+                        <label>
+                            <span>背景</span>
+                            <input id="bubbleCustomBgInput" data-bubble-custom="backgroundColor" type="color" value="#0d1114" disabled>
+                        </label>
+                        <label>
+                            <span>文字</span>
+                            <input id="bubbleCustomTextInput" data-bubble-custom="textColor" type="color" value="#eef6ff" disabled>
+                        </label>
+                        <label>
+                            <span>辅助</span>
+                            <input id="bubbleCustomMutedInput" data-bubble-custom="mutedColor" type="color" value="#a5b0b8" disabled>
+                        </label>
+                        <label>
+                            <span>边框</span>
+                            <input id="bubbleCustomBorderInput" data-bubble-custom="borderColor" type="color" value="#6bbcff" disabled>
+                        </label>
+                        <label class="bubbleRangeControl">
+                            <span>透明</span>
+                            <input id="bubbleCustomOpacityInput" data-bubble-custom="opacity" type="range" min="45" max="100" step="1" value="90" disabled>
+                            <strong id="bubbleCustomOpacityValue">90%</strong>
+                        </label>
+                        <label class="bubbleRangeControl">
+                            <span>圆角</span>
+                            <input id="bubbleCustomRadiusInput" data-bubble-custom="radius" type="range" min="0" max="18" step="1" value="6" disabled>
+                            <strong id="bubbleCustomRadiusValue">6</strong>
+                        </label>
+                        <label class="bubbleRangeControl">
+                            <span>阴影</span>
+                            <input id="bubbleCustomShadowInput" data-bubble-custom="shadow" type="range" min="0" max="80" step="1" value="34" disabled>
+                            <strong id="bubbleCustomShadowValue">34</strong>
+                        </label>
+                        <label class="bubbleRangeControl">
+                            <span>字号</span>
+                            <input id="bubbleCustomFontSizeInput" data-bubble-custom="fontSize" type="range" min="10" max="16" step="1" value="12" disabled>
+                            <strong id="bubbleCustomFontSizeValue">12</strong>
+                        </label>
+                    </div>
+                </div>
+                <div class="bubbleNudgePanel">
+                    <label class="bubbleNudgeStep">
+                        <span>微调步长</span>
+                        <input id="bubbleNudgeStepInput" type="range" min="1" max="30" step="1" value="6" disabled>
+                        <strong id="bubbleNudgeStepValue">6</strong>
+                    </label>
+                    <div class="bubbleNudgeGrid">
+                        <button type="button" data-bubble-nudge="up" disabled>上</button>
+                        <button type="button" data-bubble-nudge="forward" disabled>前</button>
+                        <button type="button" data-bubble-nudge="left" disabled>左</button>
+                        <button type="button" data-bubble-nudge="right" disabled>右</button>
+                        <button type="button" data-bubble-nudge="down" disabled>下</button>
+                        <button type="button" data-bubble-nudge="back" disabled>后</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
         <div id="contextMenu" class="contextMenu" hidden>
-            <button type="button" data-menu-action="locate">瀹氫綅</button>
-            <button type="button" data-menu-action="isolate">闅旂</button>
-            <button type="button" data-menu-action="hide">闅愯棌</button>
-            <button type="button" data-menu-action="color">鐫€鑹?/button>
-            <button type="button" data-menu-action="showAll">鍏ㄩ儴鏄剧ず</button>
+            <button type="button" data-menu-action="locate">定位</button>
+            <button type="button" data-menu-action="isolate">隔离</button>
+            <button type="button" data-menu-action="hide">隐藏</button>
+            <button type="button" data-menu-action="color">着色</button>
+            <button type="button" data-menu-action="showAll">全部显示</button>
         </div>
     </section>
 </main>
+
+<div id="treeDialog" class="treeDialogOverlay" hidden>
+    <section class="treeDialog" role="dialog" aria-modal="true" aria-labelledby="treeDialogTitle">
+        <header class="treeDialogHeader">
+            <div>
+                <h2 id="treeDialogTitle">详细模型树</h2>
+                <p>每个节点展示 localId、GlobalId、类型、名称、楼层、父级和常见属性候选值。</p>
+            </div>
+            <button id="closeTreeDialogBtn" class="smallBtn" type="button">关闭</button>
+        </header>
+        <div id="treeDialogBody" class="treeDialogBody"></div>
+    </section>
+</div>
 
 <script type="importmap">
 {
@@ -177,4 +707,3 @@
 <script type="module" src="./main-mvp.js"></script>
 </body>
 </html>
-

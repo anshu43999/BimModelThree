@@ -1,0 +1,659 @@
+/* Two-column BIM validation layout */
+.twoColumnApp {
+    display: grid;
+    grid-template-columns: 430px minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.sidePanel {
+    display: grid;
+    grid-template-rows:
+        auto
+        auto
+        auto
+        auto
+        auto
+        minmax(190px, 1fr)
+        auto
+        auto
+        minmax(160px, 0.85fr)
+        minmax(118px, 0.55fr);
+    gap: 10px;
+    min-width: 0;
+    min-height: 0;
+    padding: 12px;
+    border-right: 1px solid var(--line);
+    background: #15191c;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.sidePanel .brand {
+    min-height: 34px;
+}
+
+.sidePanel .loadbar {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.twoColumnApp .sidePanel .loadbar,
+.twoColumnApp .loadbar {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.sidePanel .viewTools {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.sidePanel .iconBtn {
+    width: auto;
+}
+
+.sidePanel .panelBlock {
+    background: #101416;
+}
+
+.sidePanel .treeBlock,
+.sidePanel .attrsBlock,
+.sidePanel .logBlock {
+    overflow: hidden;
+}
+
+.twoColumnApp > .viewport {
+    height: 100vh;
+    min-height: 0;
+}
+
+.twoColumnApp #viewerCanvas {
+    height: 100%;
+}
+
+.twoColumnApp .propsBlock {
+    max-height: 190px;
+    overflow: auto;
+}
+
+.twoColumnApp .selectedBlock {
+    padding-bottom: 10px;
+}
+
+@media (max-width: 1120px) {
+    .twoColumnApp {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 62vh;
+        height: auto;
+        min-height: 100vh;
+        overflow: auto;
+    }
+
+    .sidePanel {
+        display: grid;
+        grid-template-rows: none;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+        overflow: visible;
+    }
+
+    .twoColumnApp > .viewport {
+        height: 62vh;
+    }
+
+    .twoColumnApp .loadbar {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+    }
+
+    .twoColumnApp .mainLoadbar,
+    .twoColumnApp .compareLoadbar,
+    .twoColumnApp .compareLoadbarStatus {
+        grid-column: 1;
+        grid-row: auto;
+    }
+}
+
+/* Three-column BIM layout: tree | viewer | selected item information */
+.twoColumnApp {
+    display: grid;
+    grid-template-columns: 260px minmax(420px, 1fr) 300px;
+    grid-template-rows: 140px minmax(205px, 0.72fr) minmax(248px, 0.8fr) minmax(0, 1fr) minmax(0, 0.22fr);
+    gap: 10px;
+    width: 100vw;
+    height: 100vh;
+    padding: 10px;
+    overflow: hidden;
+    background: var(--bg);
+}
+
+.sidePanel {
+    display: contents;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    overflow: visible;
+}
+
+.twoColumnApp .brand {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: start;
+    min-width: 0;
+    min-height: 58px;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: #15191c;
+}
+
+.twoColumnApp .loadbar {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: stretch;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: 104px 16px;
+    gap: 8px;
+    min-width: 0;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: #15191c;
+}
+
+.twoColumnApp .mainLoadbar {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.twoColumnApp .compareLoadbar {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.twoColumnApp .compareLoadbarStatus {
+    grid-column: 1 / -1;
+    grid-row: 2;
+}
+
+.twoColumnApp .manifestInput {
+    grid-column: 1 / 3;
+}
+
+.twoColumnApp .modelSummary {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.twoColumnApp .modelManagerBlock {
+    grid-column: 1;
+    grid-row: 3;
+}
+
+.twoColumnApp .treeBlock {
+    grid-column: 1;
+    grid-row: 4;
+}
+
+.twoColumnApp .logBlock {
+    grid-column: 1;
+    grid-row: 5;
+}
+
+.twoColumnApp > .viewport {
+    grid-column: 2;
+    grid-row: 2 / 6;
+    height: auto;
+    min-height: 0;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.twoColumnApp .selectedBlock {
+    grid-column: 3;
+    grid-row: 1 / 3;
+    min-height: 0;
+    overflow: auto;
+}
+
+.twoColumnApp .propsBlock {
+    grid-column: 3;
+    grid-row: 3;
+    max-height: none;
+}
+
+.twoColumnApp .attrsBlock {
+    grid-column: 3;
+    grid-row: 4 / 6;
+}
+
+.twoColumnApp .treeBlock,
+.twoColumnApp .logBlock,
+.twoColumnApp .attrsBlock {
+    min-height: 0;
+    overflow: hidden;
+}
+
+.twoColumnApp .propsBlock {
+    min-height: 0;
+    overflow: auto;
+}
+
+.twoColumnApp .iconBtn {
+    width: auto;
+}
+
+.twoColumnApp > .viewport .viewportViewTools {
+    position: absolute;
+    left: 14px;
+    top: 14px;
+    z-index: 24;
+    grid-column: auto;
+    grid-row: auto;
+    display: inline-grid;
+    grid-template-columns: repeat(5, 42px);
+    gap: 6px;
+    width: auto;
+    min-width: 0;
+    padding: 7px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 6px;
+    background: rgba(12, 15, 17, 0.82);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(10px);
+    pointer-events: auto;
+}
+
+.twoColumnApp > .viewport .viewportViewTools .iconBtn {
+    width: 42px;
+    min-width: 0;
+    min-height: 32px;
+    padding: 0;
+    font-size: 11px;
+}
+
+.viewportToolDock {
+    position: absolute;
+    right: 14px;
+    top: 64px;
+    z-index: 23;
+    width: 252px;
+    max-width: calc(100% - 28px);
+    max-height: calc(100% - 154px);
+    overflow: visible;
+    pointer-events: none;
+    transition: transform 160ms ease, opacity 160ms ease;
+    will-change: transform;
+}
+
+.viewportToolDock.collapsed {
+    transform: translateX(calc(100% + 2px));
+}
+
+.viewportToolDockBody {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 7px;
+    max-height: calc(100vh - 154px);
+    overflow: auto;
+    pointer-events: none;
+    scrollbar-width: thin;
+}
+
+.viewportToolDockToggle {
+    position: absolute;
+    left: -36px;
+    top: 0;
+    display: grid;
+    width: 34px;
+    height: 72px;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-right-color: rgba(255, 255, 255, 0.06);
+    border-radius: 6px 0 0 6px;
+    background: rgba(12, 15, 17, 0.88);
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(10px);
+    pointer-events: auto;
+}
+
+.viewportToolDockToggle:hover {
+    border-color: rgba(107, 188, 255, 0.5);
+    background: rgba(19, 29, 36, 0.94);
+}
+
+.viewportToolDockToggle span {
+    writing-mode: vertical-rl;
+}
+
+.viewportToolDock.collapsed .viewportToolDockBody {
+    pointer-events: none;
+    visibility: hidden;
+}
+
+.viewportToolGroup {
+    display: grid;
+    grid-template-columns: auto;
+    gap: 5px;
+    align-items: start;
+    min-width: 0;
+    padding: 7px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 6px;
+    background: rgba(12, 15, 17, 0.84);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.32);
+    backdrop-filter: blur(10px);
+    pointer-events: auto;
+}
+
+.viewportToolTitle {
+    min-width: 0;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+    text-align: left;
+}
+
+.viewportToolButtons {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 5px;
+    min-width: 0;
+}
+
+.viewportToolButtons button {
+    min-width: 0;
+    min-height: 28px;
+    padding: 0 5px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.045);
+    color: var(--text);
+    font-size: 12px;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.viewportToolButtons button:hover:not(:disabled) {
+    border-color: rgba(107, 188, 255, 0.5);
+    background: rgba(107, 188, 255, 0.14);
+}
+
+.viewportToolButtons button:disabled {
+    opacity: 0.42;
+    cursor: not-allowed;
+}
+
+.viewportBimToolGroup {
+    min-width: 0;
+}
+
+.viewportBimToolGroup .viewportToolButtons {
+    display: grid;
+}
+
+.viewportRoamSpeedRow {
+    display: none;
+    margin: 2px 0 0;
+    padding: 6px;
+}
+
+.viewportIsolateModeRow,
+.viewportIsolateOpacityRow {
+    margin: 2px 0 0;
+    padding: 6px;
+}
+
+.viewportIsolateModeRow {
+    grid-template-columns: 58px minmax(0, 1fr);
+}
+
+.viewportIsolateOpacityRow {
+    grid-template-columns: 58px minmax(0, 1fr) 42px;
+}
+
+.viewportSectionPanel {
+    display: none;
+    margin: 2px 0 0;
+}
+
+.viewportToolHint {
+    grid-column: 1 / -1;
+    margin: 0;
+}
+
+.viewportSectionDragRow {
+    display: none;
+    margin: 2px 0 0;
+}
+
+.viewportToolDock .roamSpeedRow[hidden],
+.viewportToolDock .toolHint[hidden] {
+    display: none;
+}
+
+.viewportToolDock:has(#roamBtn.active) .viewportRoamSpeedRow:not([hidden]) {
+    display: grid;
+}
+
+.viewportToolDock:has(#sectionBtn.active) .viewportSectionPanel,
+.viewportToolDock:has(#sectionBtn.active) .viewportSectionDragRow {
+    display: grid;
+}
+
+.viewportToolDock:has(#sectionBtn.active) .viewportBimToolGroup {
+    min-width: 0;
+}
+
+@media (max-width: 760px) {
+    .exitActiveToolBtn {
+        right: 10px;
+        top: auto;
+        bottom: 72px;
+    }
+
+    .viewport:has(.viewportPanelRail.hasOpenPanel) .exitActiveToolBtn {
+        top: 64px;
+        bottom: auto;
+    }
+
+    .viewportPanelRail {
+        left: 10px;
+        right: 10px;
+        top: 64px;
+        bottom: 10px;
+        width: auto;
+        max-width: none;
+    }
+
+    .viewport:has(.viewportPanelRail.hasOpenPanel) .viewportPanelRail {
+        top: 108px;
+    }
+
+    .viewport:has(.viewportPanelRail.hasOpenPanel) .viewportToolDock {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+
+    .viewportToolDock {
+        right: 10px;
+    }
+
+    .viewportToolDockToggle {
+        left: -32px;
+        width: 30px;
+        height: 62px;
+        font-size: 12px;
+    }
+
+    .bubbleToolPanel {
+        left: 10px;
+        right: 10px;
+        bottom: 56px;
+        width: auto;
+        max-height: 42%;
+    }
+
+    .treeDialogOverlay {
+        padding: 10px;
+    }
+
+    .treeDialog {
+        width: calc(100vw - 20px);
+        height: calc(100vh - 20px);
+    }
+
+    .detailTreeSummary,
+    .detailTreeMeta,
+    .validationList {
+        grid-template-columns: 1fr;
+    }
+
+    .detailField {
+        grid-template-columns: minmax(64px, 0.32fr) minmax(0, 1fr);
+    }
+
+    .twoColumnApp {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        height: auto;
+        min-height: 100vh;
+        overflow: auto;
+    }
+
+    .twoColumnApp .brand,
+    .twoColumnApp .loadbar,
+    .twoColumnApp .modelSummary,
+    .twoColumnApp .modelManagerBlock,
+    .twoColumnApp .treeBlock,
+    .twoColumnApp .logBlock,
+    .twoColumnApp > .viewport,
+    .twoColumnApp .selectedBlock,
+    .twoColumnApp .propsBlock,
+    .twoColumnApp .attrsBlock {
+        grid-column: 1;
+        grid-row: auto;
+    }
+
+    .twoColumnApp > .viewport {
+        height: 62vh;
+    }
+
+    .twoColumnApp > .viewport .viewportViewTools {
+        left: 10px;
+        top: 10px;
+        grid-template-columns: repeat(5, minmax(34px, 1fr));
+        width: calc(100% - 20px);
+    }
+
+    .twoColumnApp > .viewport .viewportViewTools .iconBtn {
+        width: auto;
+        min-height: 30px;
+    }
+
+    .viewportToolDock {
+        left: 10px;
+        right: 10px;
+        top: 52px;
+        bottom: auto;
+        display: grid;
+        grid-template-columns: 1fr;
+        width: auto;
+        min-width: 0;
+        max-height: 48%;
+        overflow: auto;
+    }
+
+    .viewportHud {
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        max-width: none;
+        overflow: hidden;
+    }
+
+    .viewportToolGroup {
+        grid-template-columns: auto;
+    }
+
+    .viewportToolButtons,
+    .viewportBimToolGroup .viewportToolButtons {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 761px) {
+    .twoColumnApp {
+        display: grid;
+        grid-template-columns: 260px minmax(420px, 1fr) 300px;
+        grid-template-rows: 140px minmax(205px, 0.72fr) minmax(248px, 0.8fr) minmax(0, 1fr) minmax(0, 0.22fr);
+    }
+
+    .twoColumnApp .brand {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .twoColumnApp .loadbar {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    .twoColumnApp > .viewport .viewportViewTools {
+        grid-column: auto;
+        grid-row: auto;
+    }
+
+    .twoColumnApp .modelSummary {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .twoColumnApp .modelManagerBlock {
+        grid-column: 1;
+        grid-row: 3;
+    }
+
+    .twoColumnApp .treeBlock {
+        grid-column: 1;
+        grid-row: 4;
+    }
+
+    .twoColumnApp .logBlock {
+        grid-column: 1;
+        grid-row: 5;
+    }
+
+    .twoColumnApp > .viewport {
+        grid-column: 2;
+        grid-row: 2 / 6;
+        height: auto;
+    }
+
+    .twoColumnApp .selectedBlock {
+        grid-column: 3;
+        grid-row: 1 / 3;
+        min-height: 0;
+        overflow: auto;
+    }
+
+    .twoColumnApp .propsBlock {
+        grid-column: 3;
+        grid-row: 3;
+    }
+
+    .twoColumnApp .attrsBlock {
+        grid-column: 3;
+        grid-row: 4 / 6;
+    }
+}

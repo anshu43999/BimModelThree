@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>模型加载与适配</title>
+    <link rel="stylesheet" href="./common.css">
+</head>
+<body>
+<main class="page">
+    <div class="viewer"><canvas id="viewerCanvas"></canvas></div>
+    <section class="panel compact">
+        <div class="title">
+            <div class="eyebrow">REQ-001</div>
+            <h1>模型加载与适配</h1>
+            <p>这个页面只验证 manifest 加载、全模型适配和基础视角切换。</p>
+        </div>
+        <div class="actions">
+            <button id="reloadBtn" type="button">重新加载</button>
+            <button id="fitBtn" type="button">适配模型</button>
+            <button id="isoBtn" type="button">等轴视图</button>
+        </div>
+        <div id="status" class="status">准备加载</div>
+    </section>
+    <div class="badge">最小实现：加载 + 适配</div>
+</main>
+<script type="importmap">
+{"imports":{"three":"../../node_modules/three/build/three.module.js","three/addons/":"../../node_modules/three/examples/jsm/","three/examples/jsm/":"../../node_modules/three/examples/jsm/","@thatopen/fragments":"../../node_modules/@thatopen/fragments/dist/index.mjs","web-ifc":"../../node_modules/web-ifc/web-ifc-api.js"}}
+</script>
+<script type="module" src="./model-load.js"></script>
+</body>
+</html>

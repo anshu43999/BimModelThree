@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>标签编辑与持久化</title>
+    <link rel="stylesheet" href="./common.css">
+</head>
+<body>
+<main class="page">
+    <div class="viewer"><canvas id="viewerCanvas"></canvas></div>
+    <div id="overlay" class="overlay"></div>
+    <section class="panel compact">
+        <div class="title">
+            <div class="eyebrow">REQ-005</div>
+            <h1>标签编辑与持久化</h1>
+            <p>点击构件后创建一个业务标签，标签保存在 localStorage。</p>
+        </div>
+        <input id="labelText" type="text" value="设备标签" placeholder="输入标签名称">
+        <div class="actions">
+            <button id="addLabelBtn" type="button">创建标签</button>
+            <button id="cancelEditBtn" type="button" hidden>取消编辑</button>
+            <button id="clearBtn" type="button">清除</button>
+        </div>
+        <div id="selectedInfo" class="status">请先点击模型选择构件</div>
+        <div id="labelList" class="miniList"></div>
+        <div id="status" class="status">准备加载</div>
+    </section>
+</main>
+<script type="importmap">
+{"imports":{"three":"../../node_modules/three/build/three.module.js","three/addons/":"../../node_modules/three/examples/jsm/","three/examples/jsm/":"../../node_modules/three/examples/jsm/","@thatopen/fragments":"../../node_modules/@thatopen/fragments/dist/index.mjs","web-ifc":"../../node_modules/web-ifc/web-ifc-api.js"}}
+</script>
+<script type="module" src="./label.js"></script>
+</body>
+</html>

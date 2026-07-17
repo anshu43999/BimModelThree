@@ -1,0 +1,205 @@
+/* Right inspector tabs keep high-frequency model information in one stable column. */
+.rightInspectorDock {
+    grid-column: 3;
+    grid-row: 1 / 6;
+    display: grid;
+    grid-template-rows: auto auto minmax(0, 1fr);
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: #101416;
+}
+
+.rightInspectorHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-width: 0;
+    padding: 10px 12px 8px;
+    border-bottom: 1px solid var(--line);
+    background: #15191c;
+}
+
+.rightInspectorHeader > div {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+}
+
+.rightInspectorHeaderActions {
+    display: flex;
+    flex: 0 0 auto;
+    gap: 5px;
+}
+
+.rightInspectorHeader .workspaceEntryBtn,
+.rightInspectorHeader .settingsEntryBtn {
+    flex: 0 0 auto;
+    min-height: 30px;
+    padding-inline: 8px;
+    white-space: nowrap;
+}
+
+.rightInspectorHeader .settingsEntryBtn {
+    border-color: rgba(241, 184, 75, 0.45);
+    background: rgba(241, 184, 75, 0.08);
+    color: #f5d99f;
+}
+
+.rightInspectorHeader strong,
+.rightInspectorHeader span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.rightInspectorHeader strong {
+    color: var(--text);
+    font-size: 14px;
+}
+
+.rightInspectorHeader span {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.rightInspectorTabs {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4px;
+    min-width: 0;
+    padding: 7px;
+    border-bottom: 1px solid var(--line);
+    background: #0f1417;
+}
+
+.rightInspectorTabs button {
+    min-width: 0;
+    min-height: 30px;
+    overflow: hidden;
+    padding: 0 5px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.035);
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.rightInspectorTabs button:hover,
+.rightInspectorTabs button.active {
+    border-color: rgba(67, 209, 158, 0.58);
+    background: rgba(67, 209, 158, 0.11);
+    color: var(--text);
+}
+
+.rightInspectorTabs button:focus-visible {
+    outline: 2px solid rgba(107, 188, 255, 0.8);
+    outline-offset: 1px;
+}
+
+.rightInspectorBody {
+    min-height: 0;
+    overflow: hidden;
+}
+
+.twoColumnApp .rightInspectorPanel {
+    grid-column: auto;
+    grid-row: auto;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    max-height: none;
+    margin: 0;
+    overflow: auto;
+    border: 0;
+    border-radius: 0;
+}
+
+.twoColumnApp .rightInspectorPanel[hidden] {
+    display: none !important;
+}
+
+.twoColumnApp .rightInspectorPanel.attrsBlock {
+    display: grid;
+    grid-template-rows: auto auto minmax(0, 1fr);
+    overflow: hidden;
+}
+
+.twoColumnApp .rightInspectorPanel.compareBlock {
+    align-content: start;
+}
+
+.rightInspectorPanel .versionComparePanel {
+    margin-top: 8px;
+}
+
+.versionCompareEmpty {
+    margin-top: 10px;
+    padding: 12px;
+    border: 1px dashed rgba(255, 255, 255, 0.12);
+    border-radius: 5px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.versionComparePanel:not([hidden]) + .versionCompareEmpty {
+    display: none;
+}
+
+.settingsDrawerTabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.settingsLogsPanel {
+    grid-template-rows: auto minmax(0, 1fr);
+    height: calc(100vh - 114px);
+    min-height: 0;
+}
+
+.settingsLogsPanel:not([hidden]) {
+    display: grid;
+}
+
+.settingsLogsPanel #log {
+    min-height: 0;
+    overflow: auto;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 5px;
+    background: #0c1012;
+}
+
+.twoColumnApp .treeBlock {
+    grid-row: 4 / 6;
+}
+
+@media (max-width: 760px) {
+    .twoColumnApp .treeBlock {
+        grid-row: auto;
+    }
+
+    .rightInspectorDock {
+        grid-column: 1;
+        grid-row: auto;
+        height: min(68vh, 620px);
+        min-height: 420px;
+    }
+
+    .settingsLogsPanel {
+        height: calc(100vh - 108px);
+    }
+}
+
+@media (min-width: 761px) {
+    .rightInspectorDock {
+        grid-column: 3;
+        grid-row: 1 / 6;
+    }
+}

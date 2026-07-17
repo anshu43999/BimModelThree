@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BIM Viewer 功能演示台</title>
+    <link rel="stylesheet" href="./demo.css">
+</head>
+<body>
+<main class="demoShell">
+    <aside class="requirementPane" aria-label="功能目录">
+        <header class="paneHeader">
+            <div class="brandRow">
+                <div>
+                    <p class="eyebrow">BimModelThree</p>
+                    <h1>功能演示台</h1>
+                </div>
+                <span id="demoProgress" class="progressBadge">0 / 0</span>
+            </div>
+            <label class="searchField">
+                <span class="searchIcon" aria-hidden="true">⌕</span>
+                <input id="requirementSearch" type="search" placeholder="搜索功能、编号或阶段" autocomplete="off">
+                <button id="clearSearchBtn" class="clearSearchBtn" type="button" title="清除搜索" hidden>×</button>
+            </label>
+            <div id="stageFilters" class="stageFilters" role="tablist" aria-label="阶段筛选"></div>
+        </header>
+
+        <nav id="requirementList" class="requirementList" aria-label="功能项"></nav>
+
+        <footer class="paneFooter">
+            <a href="./index.html" target="_blank" rel="noopener">完整 Viewer</a>
+            <a href="./mobile.html" target="_blank" rel="noopener">移动端</a>
+        </footer>
+    </aside>
+
+    <section class="viewerPane" aria-label="功能演示区域">
+        <header class="viewerHeader">
+            <div class="currentFeature">
+                <span id="currentFeatureStage" class="featureStage">P0</span>
+                <div>
+                    <strong id="currentFeatureTitle">模型加载与适配</strong>
+                    <small id="currentFeatureMeta">REQ-001</small>
+                </div>
+            </div>
+            <div class="viewerActions">
+                <button id="reloadDemoBtn" class="iconCommand" type="button" title="重新加载当前示例" aria-label="重新加载当前示例">↻</button>
+                <button id="openDemoBtn" class="iconCommand" type="button" title="在新窗口打开" aria-label="在新窗口打开">↗</button>
+            </div>
+        </header>
+        <div class="viewerSurface">
+            <iframe id="viewerFrame" class="viewerFrame" title="BIM 功能预览"></iframe>
+            <div id="frameLoading" class="frameLoading" role="status">
+                <span class="loadingBar" aria-hidden="true"></span>
+                <strong>正在加载示例</strong>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script type="module" src="./demo.js"></script>
+</body>
+</html>

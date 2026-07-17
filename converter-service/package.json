@@ -10,6 +10,7 @@
     "convert:8g": "node --max-old-space-size=8192 src/convert-ifc-to-fragments.js",
     "convert:full:8g": "node --max-old-space-size=8192 src/convert-ifc-to-fragments.js --full-properties",
     "convert:16g": "node --max-old-space-size=16384 src/convert-ifc-to-fragments.js",
+    "serve": "node server/api-server.js",
     "validate:t003-t004": "node src/validate-t003-t004.js",
     "validate:t003-t004:8g": "node --max-old-space-size=8192 src/validate-t003-t004.js",
     "validate:t003-t004:16g": "node --max-old-space-size=16384 src/validate-t003-t004.js"

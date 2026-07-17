@@ -1,0 +1,327 @@
+/* Dense operational sidebar: model health, model set and semantic tree. */
+
+.twoColumnApp .brand {
+    align-self: stretch;
+    height: 100%;
+    padding: 14px;
+    border-color: rgba(107, 188, 255, 0.22);
+    background:
+        linear-gradient(145deg, rgba(67, 209, 158, 0.055), transparent 46%),
+        #14191c;
+}
+
+.twoColumnApp .brand .mark {
+    flex: 0 0 auto;
+    width: 36px;
+    height: 36px;
+}
+
+.twoColumnApp .brand > div:last-child {
+    min-width: 0;
+}
+
+.twoColumnApp .brand h1 {
+    overflow: hidden;
+    font-size: 17px;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.twoColumnApp .brand p {
+    display: -webkit-box;
+    overflow: hidden;
+    margin-top: 5px;
+    line-height: 1.45;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.modelSummary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto minmax(0, 1fr);
+    align-content: start;
+}
+
+.modelSummary > .blockTitle {
+    padding: 10px 12px 7px;
+    color: #e8edf1;
+    font-size: 13px;
+}
+
+.modelSummary .stats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 5px;
+    padding: 0 10px 9px;
+}
+
+.modelSummary .stats > div {
+    min-height: 52px;
+    padding: 7px;
+    border-color: rgba(255, 255, 255, 0.075);
+    background: #141a1d;
+}
+
+.modelSummary .stats span {
+    font-size: 10px;
+    line-height: 1.2;
+}
+
+.modelSummary .stats strong {
+    margin-top: 5px;
+    font-size: 12px;
+    line-height: 1.2;
+}
+
+.modelSummary .validationPanel {
+    min-height: 0;
+    margin: 0 10px 9px;
+    padding-top: 7px;
+}
+
+.modelSummary .miniPanelHeader {
+    min-height: 28px;
+    margin-bottom: 5px;
+}
+
+.modelSummary .miniHeaderActions {
+    flex-wrap: nowrap;
+}
+
+.modelSummary .miniHeaderActions .smallBtn {
+    min-height: 25px;
+    padding-inline: 8px;
+}
+
+.modelSummary .validationList {
+    max-height: 92px;
+    min-height: 28px;
+}
+
+.modelSummary .validationList .miniEmpty {
+    overflow: hidden;
+    font-size: 11px;
+    line-height: 1.45;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.modelManagerBlock {
+    grid-template-rows: auto auto minmax(0, 1fr);
+    min-height: 0;
+}
+
+.modelManagerBlock .blockHeader {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 7px;
+    padding: 9px 10px 8px;
+}
+
+.modelManagerBlock .blockTitle {
+    overflow: hidden;
+    font-size: 13px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.modelManagerBlock .blockActions {
+    display: grid;
+    grid-template-columns: minmax(66px, auto) repeat(3, minmax(0, 1fr));
+    gap: 5px;
+    width: 100%;
+}
+
+.modelManagerBlock .blockMeta {
+    align-self: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.modelManagerBlock .blockActions .smallBtn {
+    min-width: 0;
+    min-height: 27px;
+    padding-inline: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.modelManagerBlock .modelAppendForm {
+    gap: 5px;
+    padding: 8px 10px;
+}
+
+.modelManagerBlock .modelAppendForm > * {
+    min-width: 0;
+}
+
+.modelManagerBlock .modelManagerList {
+    min-height: 0;
+    padding: 8px 10px 10px;
+}
+
+#modelManagerEmpty:not([hidden]) {
+    display: grid;
+    grid-row: 3;
+    min-height: 0;
+    place-items: center;
+    padding: 18px;
+    border-top: 1px solid rgba(255, 255, 255, 0.055);
+    color: #82919b;
+    line-height: 1.55;
+    text-align: center;
+}
+
+.treeBlock {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto minmax(0, 1fr);
+    background: #0e1316;
+}
+
+.treeBlock > .blockHeader {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+    padding: 9px 10px;
+}
+
+.treeBlock > .blockHeader .blockTitle {
+    flex: 0 1 auto;
+    min-width: 48px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.treeBlock > .blockHeader .blockActions {
+    flex: 0 0 auto;
+    gap: 5px;
+}
+
+.treeBlock > .blockHeader .smallBtn {
+    min-height: 27px;
+    padding-inline: 7px;
+    white-space: nowrap;
+}
+
+.treeBlock > .treeTabs {
+    grid-column: 1;
+    grid-row: 2;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    min-width: 0;
+    gap: 5px;
+    padding: 7px 8px;
+}
+
+.treeBlock .treeTab {
+    min-width: 0;
+    min-height: 29px;
+    overflow: hidden;
+    padding-inline: 3px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.treeBlock > .treeSearchPanel {
+    grid-column: 1;
+    grid-row: 3;
+    min-width: 0;
+    padding: 7px 8px 8px;
+}
+
+.treeBlock .treeSearchRow {
+    grid-template-columns: minmax(0, 1fr) 48px;
+    min-width: 0;
+}
+
+.treeBlock .treeSearchInput {
+    min-width: 0;
+    height: 30px;
+    padding-inline: 8px;
+    overflow: hidden;
+    font-size: 11px;
+    text-overflow: ellipsis;
+}
+
+.treeBlock #treeSearchClearBtn {
+    min-width: 0;
+    min-height: 30px;
+    padding-inline: 5px;
+}
+
+.treeBlock .treeSearchStatus {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.treeBlock > #treeSearchResults,
+.treeBlock > #treeEmpty,
+.treeBlock > #modelTree {
+    grid-column: 1;
+    grid-row: 4;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+}
+
+.treeBlock > #treeEmpty {
+    align-self: start;
+    padding: 20px 12px;
+    color: #73828c;
+    line-height: 1.55;
+}
+
+.treeBlock > #modelTree {
+    padding: 6px 4px 10px 8px;
+}
+
+@media (min-width: 1281px) {
+    .twoColumnApp {
+        grid-template-columns: 300px minmax(420px, 1fr) 300px;
+        grid-template-rows: 140px minmax(168px, 0.58fr) minmax(210px, 0.72fr) minmax(0, 1fr) minmax(0, 0.12fr);
+    }
+}
+
+@media (min-width: 1021px) and (max-width: 1280px) {
+    .twoColumnApp {
+        grid-template-columns: 280px minmax(0, 1fr) 280px;
+        grid-template-rows: 140px minmax(168px, 0.58fr) minmax(210px, 0.72fr) minmax(0, 1fr) minmax(0, 0.12fr);
+    }
+}
+
+@media (max-width: 1020px) {
+    .twoColumnApp .brand {
+        height: auto;
+        min-height: 92px;
+    }
+
+    .modelSummary,
+    .modelManagerBlock {
+        min-height: 0;
+    }
+
+    .modelManagerBlock .blockActions {
+        max-width: 520px;
+    }
+}
+
+@media (max-width: 420px) {
+    .modelSummary .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .modelManagerBlock .blockActions {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .modelManagerBlock .blockMeta {
+        grid-column: 1 / -1;
+    }
+
+    .treeBlock > .blockHeader {
+        align-items: flex-start;
+    }
+}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>捕捉与距离测量</title>
+    <link rel="stylesheet" href="./common.css">
+</head>
+<body>
+<main class="page">
+    <div class="viewer"><canvas id="viewerCanvas"></canvas></div>
+    <div id="measureOverlay" class="overlay"></div>
+    <section class="panel compact">
+        <div class="title">
+            <div class="eyebrow">REQ-004</div>
+            <h1>捕捉与距离测量</h1>
+            <p>点击模型两次，按命中点计算一条最小距离测量。</p>
+        </div>
+        <button id="clearBtn" type="button">清除测量</button>
+        <div id="measureInfo" class="status">请选择第一个点</div>
+        <div id="status" class="status">准备加载</div>
+    </section>
+</main>
+<script type="importmap">
+{"imports":{"three":"../../node_modules/three/build/three.module.js","three/addons/":"../../node_modules/three/examples/jsm/","three/examples/jsm/":"../../node_modules/three/examples/jsm/","@thatopen/fragments":"../../node_modules/@thatopen/fragments/dist/index.mjs","web-ifc":"../../node_modules/web-ifc/web-ifc-api.js"}}
+</script>
+<script type="module" src="./measure.js"></script>
+</body>
+</html>

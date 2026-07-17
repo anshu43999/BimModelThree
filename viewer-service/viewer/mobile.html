@@ -11,40 +11,25 @@
     <section class="mobileViewport">
         <canvas id="viewerCanvas"></canvas>
         <div class="topBar">
-            <div class="brandText">
-                <strong>BIM Mobile</strong>
-                <span id="statusText">Ready</span>
-            </div>
+            <div class="brandText"><strong>BIM Mobile</strong><span id="statusText">Ready</span></div>
             <div class="topActions">
-                <label class="roundBtn" title="閫夋嫨 .frag">
-                    <span>閫夋嫨鏂囦欢</span>
-                    <input id="fragFile" type="file" accept=".frag">
-                </label>
-                <button id="openLoadBtn" class="roundBtn primaryRoundBtn" type="button">鍔犺浇妯″瀷</button>
+                <label class="roundBtn" title="选择 .frag"><span>选择文件</span><input id="fragFile" type="file" accept=".frag"></label>
+                <button id="openLoadBtn" class="roundBtn primaryRoundBtn" type="button">加载模型</button>
             </div>
         </div>
 
         <div class="modelHud">
-            <div>
-                <span>妯″瀷</span>
-                <strong id="modelName">鏈姞杞?/strong>
-            </div>
-            <div>
-                <span>鏋勪欢</span>
-                <strong id="itemCount">-</strong>
-            </div>
-            <div>
-                <span>閫変腑</span>
-                <strong id="selectedCount">-</strong>
-            </div>
+            <div><span>模型</span><strong id="modelName">未加载</strong></div>
+            <div><span>构件</span><strong id="itemCount">-</strong></div>
+            <div><span>选中</span><strong id="selectedCount">-</strong></div>
         </div>
 
-        <nav class="quickTools" aria-label="绉诲姩绔ā鍨嬪伐鍏?>
+        <nav class="quickTools" aria-label="移动端模型工具">
             <button id="fitBtn" type="button" disabled>FIT</button>
             <button id="isoBtn" type="button" disabled>ISO</button>
             <button id="topBtn" type="button" disabled>TOP</button>
-            <button id="treeBtn" type="button" disabled>鏍?/button>
-            <button id="infoBtn" type="button">淇℃伅</button>
+            <button id="treeBtn" type="button" disabled>树</button>
+            <button id="infoBtn" type="button">信息</button>
         </nav>
     </section>
 
@@ -53,78 +38,66 @@
         <div class="loadPanel">
             <div class="sheetHandle"></div>
             <div class="sheetHeader">
-                <div>
-                    <strong>鍔犺浇妯″瀷</strong>
-                    <span>.frag 鏂囦欢鎴栭」鐩唴璺緞</span>
-                </div>
-                <button class="textBtn" type="button" data-close-load>鍏抽棴</button>
+                <div><strong>加载模型</strong><span>.frag 文件或模型 URL</span></div>
+                <button class="textBtn" type="button" data-close-load>关闭</button>
             </div>
             <div class="loadForm">
-                <input id="fragUrl" type="text" value="" placeholder="http://127.0.0.1:5175/models/model.frag" aria-label="妯″瀷璺緞">
-                <button id="loadUrlBtn" class="primaryBtn" type="button">鍔犺浇璺緞</button>
+                <input id="fragUrl" type="text" value="" placeholder="http://127.0.0.1:5175/models/model.frag" aria-label="模型路径">
+                <button id="loadUrlBtn" class="primaryBtn" type="button">加载路径</button>
             </div>
         </div>
     </section>
 
     <section id="bottomSheet" class="bottomSheet">
         <div class="sheetHandle"></div>
-        <div class="sheetTabs" role="tablist" aria-label="绉诲姩绔俊鎭潰鏉?>
-            <button class="active" type="button" data-tab="info">鏋勪欢淇℃伅</button>
-            <button type="button" data-tab="tree">妯″瀷鏍?/button>
-            <button type="button" data-tab="tools">鎿嶄綔</button>
-            <button type="button" data-tab="log">鏃ュ織</button>
+        <div class="sheetTabs" role="tablist" aria-label="移动端信息面板">
+            <button class="active" type="button" data-tab="info">构件信息</button>
+            <button type="button" data-tab="tree">模型树</button>
+            <button type="button" data-tab="tools">操作</button>
+            <button type="button" data-tab="log">日志</button>
         </div>
 
         <div class="sheetBody">
             <section class="sheetPane active" data-pane="info">
                 <div class="mobileStartPanel" id="mobileStartPanel">
-                    <strong>鍔犺浇 BIM 妯″瀷</strong>
-                    <span>閫夋嫨鏈湴 .frag 鏂囦欢锛屾垨鍔犺浇椤圭洰鍐呴粯璁ゆā鍨嬨€?/span>
+                    <strong>加载 BIM 模型</strong>
+                    <span>选择本地 .frag 文件，或输入模型 URL。</span>
                     <div class="startActions">
-                        <label class="startBtn">
-                            <span>閫夋嫨 .frag</span>
-                            <input id="sheetFragFile" type="file" accept=".frag">
-                        </label>
-                        <button id="sheetOpenLoadBtn" class="startBtn primaryStartBtn" type="button">鍔犺浇璺緞</button>
+                        <label class="startBtn"><span>选择 .frag</span><input id="sheetFragFile" type="file" accept=".frag"></label>
+                        <button id="sheetOpenLoadBtn" class="startBtn primaryStartBtn" type="button">加载路径</button>
                     </div>
                 </div>
-                <div class="emptyState" id="infoEmpty">鐐瑰嚮妯″瀷鏋勪欢鍚庡睍绀哄熀纭€淇℃伅</div>
+                <div class="emptyState" id="infoEmpty">点击模型构件后展示基础信息</div>
                 <dl id="basicProps" class="propsList"></dl>
                 <div id="attributeList" class="attributeList"></div>
             </section>
 
             <section class="sheetPane" data-pane="tree">
-                <div class="treeTabs" role="tablist" aria-label="妯″瀷鏍戝垎绫?>
+                <div class="treeTabs" role="tablist" aria-label="模型树分类">
                     <button class="active" type="button" data-tree-tab="models">models</button>
                     <button type="button" data-tree-tab="objects">objects</button>
                     <button type="button" data-tree-tab="classes">classes</button>
                     <button type="button" data-tree-tab="storeys">storeys</button>
                 </div>
-                <div id="treeEmpty" class="emptyState">鍔犺浇妯″瀷鍚庡睍绀烘ā鍨嬫爲</div>
+                <div id="treeEmpty" class="emptyState">加载模型后展示模型树</div>
                 <div id="modelTree" class="treeList"></div>
             </section>
 
             <section class="sheetPane" data-pane="tools">
                 <div class="toolGrid">
-                    <button id="locateBtn" type="button" disabled>瀹氫綅</button>
-                    <button id="hideBtn" type="button" disabled>闅愯棌</button>
-                    <button id="isolateBtn" type="button" disabled>闅旂</button>
-                    <button id="showAllBtn" type="button" disabled>鍏ㄩ儴鏄剧ず</button>
-                    <button id="colorBtn" type="button" disabled>鐫€鑹?/button>
-                    <button id="resetColorBtn" type="button" disabled>閲嶇疆</button>
-                    <button id="snapshotBtn" type="button" disabled>蹇収</button>
-                    <button id="fullscreenBtn" type="button">鍏ㄥ睆</button>
+                    <button id="locateBtn" type="button" disabled>定位</button>
+                    <button id="hideBtn" type="button" disabled>隐藏</button>
+                    <button id="isolateBtn" type="button" disabled>隔离</button>
+                    <button id="showAllBtn" type="button" disabled>全部显示</button>
+                    <button id="colorBtn" type="button" disabled>着色</button>
+                    <button id="resetColorBtn" type="button" disabled>重置</button>
+                    <button id="snapshotBtn" type="button" disabled>快照</button>
+                    <button id="fullscreenBtn" type="button">全屏</button>
                 </div>
-                <label class="rangeRow">
-                    <span>閫忔槑搴?/span>
-                    <input id="opacityInput" type="range" min="0.12" max="1" step="0.02" value="1" disabled>
-                    <strong id="opacityValue">100%</strong>
-                </label>
+                <label class="rangeRow"><span>透明度</span><input id="opacityInput" type="range" min="0.12" max="1" step="0.02" value="1" disabled><strong id="opacityValue">100%</strong></label>
             </section>
 
-            <section class="sheetPane" data-pane="log">
-                <pre id="log"></pre>
-            </section>
+            <section class="sheetPane" data-pane="log"><pre id="log"></pre></section>
         </div>
     </section>
 </main>
@@ -143,4 +116,3 @@
 <script type="module" src="./mobile-main.js"></script>
 </body>
 </html>
-

@@ -1,0 +1,575 @@
+:root {
+    color-scheme: dark;
+    --bg: #090d0f;
+    --panel: #121719;
+    --panel-raised: #171d20;
+    --surface: #0b0f11;
+    --line: #2a3439;
+    --line-soft: rgba(255, 255, 255, 0.08);
+    --text: #edf2f4;
+    --muted: #94a1a8;
+    --quiet: #66747b;
+    --accent: #48c996;
+    --blue: #6eb8ec;
+    --gold: #d6b968;
+    --danger: #e77973;
+    --sidebar-width: 340px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Microsoft YaHei UI", "Segoe UI", sans-serif;
+}
+
+button,
+input,
+a {
+    font: inherit;
+}
+
+button,
+a {
+    color: inherit;
+}
+
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+    outline: 2px solid rgba(110, 184, 236, 0.82);
+    outline-offset: 2px;
+}
+
+h1,
+p {
+    margin: 0;
+}
+
+.demoShell {
+    display: grid;
+    grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--bg);
+}
+
+.requirementPane {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    min-width: 0;
+    min-height: 0;
+    border-right: 1px solid var(--line);
+    background: var(--panel);
+}
+
+.paneHeader {
+    display: grid;
+    gap: 14px;
+    padding: 18px 16px 14px;
+    border-bottom: 1px solid var(--line);
+    background: var(--panel-raised);
+}
+
+.brandRow {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.eyebrow {
+    margin-bottom: 4px;
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0;
+    text-transform: uppercase;
+}
+
+h1 {
+    font-size: 22px;
+    font-weight: 720;
+    line-height: 1.15;
+    letter-spacing: 0;
+}
+
+.progressBadge {
+    flex: 0 0 auto;
+    min-width: 54px;
+    padding: 5px 8px;
+    border: 1px solid rgba(72, 201, 150, 0.36);
+    border-radius: 5px;
+    background: rgba(72, 201, 150, 0.08);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 800;
+    text-align: center;
+}
+
+.searchField {
+    position: relative;
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr) 30px;
+    align-items: center;
+    min-width: 0;
+    height: 36px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--surface);
+}
+
+.searchField:focus-within {
+    border-color: rgba(110, 184, 236, 0.72);
+}
+
+.searchIcon {
+    color: var(--quiet);
+    font-size: 18px;
+    text-align: center;
+}
+
+.searchField input {
+    width: 100%;
+    min-width: 0;
+    height: 34px;
+    padding: 0 4px;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--text);
+    font-size: 12px;
+}
+
+.searchField input::placeholder {
+    color: var(--quiet);
+}
+
+.clearSearchBtn,
+.iconCommand {
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
+.clearSearchBtn {
+    width: 28px;
+    height: 28px;
+    color: var(--muted);
+    font-size: 18px;
+}
+
+.clearSearchBtn[hidden] {
+    display: none;
+}
+
+.stageFilters {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 4px;
+}
+
+.stageFilter {
+    min-width: 0;
+    height: 28px;
+    overflow: hidden;
+    padding: 0 4px;
+    border: 1px solid var(--line-soft);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.025);
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.stageFilter:hover,
+.stageFilter.active {
+    border-color: rgba(72, 201, 150, 0.5);
+    background: rgba(72, 201, 150, 0.1);
+    color: var(--text);
+}
+
+.requirementList {
+    min-height: 0;
+    overflow: auto;
+    padding: 10px 8px 16px;
+    scrollbar-width: thin;
+    scrollbar-color: #3a464b transparent;
+}
+
+.requirementGroup {
+    display: grid;
+    gap: 5px;
+    padding: 7px 0 10px;
+}
+
+.requirementGroup + .requirementGroup {
+    border-top: 1px solid rgba(255, 255, 255, 0.055);
+}
+
+.requirementGroupHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-height: 24px;
+    padding: 0 8px;
+    color: var(--quiet);
+    font-size: 10px;
+}
+
+.requirementGroupHeader strong {
+    font-weight: 700;
+}
+
+.requirementGroupHeader span {
+    font-variant-numeric: tabular-nums;
+}
+
+.requirementItem {
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr) 10px;
+    align-items: center;
+    gap: 9px;
+    width: 100%;
+    min-height: 58px;
+    padding: 8px 9px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text);
+    text-align: left;
+    cursor: pointer;
+}
+
+.requirementItem:hover {
+    border-color: var(--line-soft);
+    background: rgba(255, 255, 255, 0.035);
+}
+
+.requirementItem.active {
+    border-color: rgba(72, 201, 150, 0.46);
+    background: rgba(72, 201, 150, 0.09);
+}
+
+.requirementItem.pending {
+    opacity: 0.62;
+    cursor: not-allowed;
+}
+
+.requirementItem.pending:hover {
+    border-color: transparent;
+    background: transparent;
+}
+
+.requirementStage {
+    display: grid;
+    width: 34px;
+    height: 28px;
+    place-items: center;
+    border: 1px solid rgba(214, 185, 104, 0.32);
+    border-radius: 4px;
+    color: var(--gold);
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.requirementContent {
+    display: grid;
+    gap: 3px;
+    min-width: 0;
+}
+
+.requirementContent strong,
+.requirementContent small {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.requirementContent strong {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.requirementContent small {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.requirementState {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--quiet);
+}
+
+.requirementState.ready {
+    background: var(--accent);
+    box-shadow: 0 0 0 3px rgba(72, 201, 150, 0.1);
+}
+
+.requirementEmpty {
+    display: grid;
+    min-height: 160px;
+    place-items: center;
+    color: var(--quiet);
+    font-size: 12px;
+}
+
+.paneFooter {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    padding: 10px;
+    border-top: 1px solid var(--line);
+    background: var(--panel-raised);
+}
+
+.paneFooter a {
+    display: grid;
+    min-width: 0;
+    min-height: 32px;
+    place-items: center;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.025);
+    color: var(--muted);
+    font-size: 11px;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.paneFooter a:hover {
+    border-color: rgba(110, 184, 236, 0.5);
+    color: var(--text);
+}
+
+.viewerPane {
+    display: grid;
+    grid-template-rows: 50px minmax(0, 1fr);
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    background: var(--surface);
+}
+
+.viewerHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    min-width: 0;
+    padding: 0 12px 0 14px;
+    border-bottom: 1px solid var(--line);
+    background: var(--panel);
+}
+
+.currentFeature {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.featureStage {
+    display: grid;
+    flex: 0 0 auto;
+    min-width: 38px;
+    height: 26px;
+    place-items: center;
+    border: 1px solid rgba(214, 185, 104, 0.36);
+    border-radius: 4px;
+    color: var(--gold);
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.featureStage[data-stage="SDK"] {
+    border-color: rgba(110, 184, 236, 0.42);
+    color: var(--blue);
+}
+
+.currentFeature div {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+}
+
+.currentFeature strong,
+.currentFeature small {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.currentFeature strong {
+    font-size: 13px;
+}
+
+.currentFeature small {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.viewerActions {
+    display: flex;
+    flex: 0 0 auto;
+    gap: 5px;
+}
+
+.iconCommand {
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.025);
+    color: var(--muted);
+    font-size: 17px;
+}
+
+.iconCommand:hover {
+    border-color: rgba(110, 184, 236, 0.55);
+    background: rgba(110, 184, 236, 0.08);
+    color: var(--text);
+}
+
+.viewerSurface {
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    background: #06090a;
+}
+
+.viewerFrame {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: #06090a;
+}
+
+.frameLoading {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 12px;
+    background: rgba(6, 9, 10, 0.92);
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.frameLoading[hidden] {
+    display: none;
+}
+
+.loadingBar {
+    position: relative;
+    display: block;
+    width: 160px;
+    height: 3px;
+    overflow: hidden;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.loadingBar::after {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 45%;
+    background: var(--accent);
+    content: "";
+    animation: loading-slide 900ms ease-in-out infinite alternate;
+}
+
+@keyframes loading-slide {
+    from {
+        transform: translateX(-20%);
+    }
+    to {
+        transform: translateX(145%);
+    }
+}
+
+@media (max-width: 900px) {
+    body {
+        overflow: auto;
+    }
+
+    .demoShell {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto minmax(620px, 72vh);
+        height: auto;
+        min-height: 100vh;
+        overflow: visible;
+    }
+
+    .requirementPane {
+        max-height: 440px;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+    }
+
+    .requirementList {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .requirementGroup {
+        align-content: start;
+        border: 1px solid var(--line-soft);
+        border-radius: 6px;
+        padding: 6px;
+    }
+
+    .requirementGroup + .requirementGroup {
+        border-top: 1px solid var(--line-soft);
+    }
+}
+
+@media (max-width: 580px) {
+    .paneHeader {
+        padding: 14px 12px 12px;
+    }
+
+    .stageFilters {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .requirementList {
+        grid-template-columns: 1fr;
+    }
+
+    .viewerPane {
+        grid-template-rows: 54px minmax(0, 1fr);
+    }
+
+    .currentFeature strong {
+        max-width: 210px;
+    }
+}

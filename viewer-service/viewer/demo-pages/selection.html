@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>构件选择与基础操作</title>
+    <link rel="stylesheet" href="./common.css">
+</head>
+<body>
+<main class="page">
+    <div class="viewer"><canvas id="viewerCanvas"></canvas></div>
+    <section class="panel compact">
+        <div class="title">
+            <div class="eyebrow">REQ-003</div>
+            <h1>构件选择与基础操作</h1>
+            <p>点击模型选择构件，只保留选择、定位、清除三个最小操作。</p>
+        </div>
+        <div class="actions">
+            <button id="fitSelectionBtn" type="button">定位选择</button>
+            <button id="clearSelectionBtn" type="button">清除选择</button>
+        </div>
+        <div id="selectionInfo" class="status">尚未选择构件</div>
+        <div id="status" class="status">准备加载</div>
+    </section>
+</main>
+<script type="importmap">
+{"imports":{"three":"../../node_modules/three/build/three.module.js","three/addons/":"../../node_modules/three/examples/jsm/","three/examples/jsm/":"../../node_modules/three/examples/jsm/","@thatopen/fragments":"../../node_modules/@thatopen/fragments/dist/index.mjs","web-ifc":"../../node_modules/web-ifc/web-ifc-api.js"}}
+</script>
+<script type="module" src="./selection.js"></script>
+</body>
+</html>

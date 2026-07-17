@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>路径漫游与关键帧</title>
+    <link rel="stylesheet" href="./common.css">
+</head>
+<body>
+<main class="page">
+    <div class="viewer"><canvas id="viewerCanvas" tabindex="0"></canvas></div>
+    <section class="panel">
+        <div class="title">
+            <div class="eyebrow">REQ-011</div>
+            <h1>路径漫游与关键帧</h1>
+            <p>独立验证路线保存、相机关键帧和路径播放。</p>
+        </div>
+        <div class="row">
+            <select id="routeSelect" aria-label="漫游路线"></select>
+            <button id="newRouteBtn" type="button">新建路线</button>
+        </div>
+        <div class="row">
+            <input id="routeNameInput" type="text" placeholder="路线名称">
+            <button id="saveRouteBtn" type="button">保存名称</button>
+            <button id="deleteRouteBtn" type="button">删除路线</button>
+        </div>
+        <div class="actions">
+            <button id="addPointBtn" type="button">添加当前视角</button>
+            <button id="playBtn" type="button">播放</button>
+            <button id="pauseBtn" type="button">暂停</button>
+            <button id="stopBtn" type="button">停止</button>
+            <button id="clearBtn" type="button">清空点位</button>
+        </div>
+        <label class="field">
+            <span>播放速度 <strong id="speedValue">1x</strong></span>
+            <input id="speedInput" type="range" min="0.25" max="3" step="0.25" value="1">
+        </label>
+        <div id="pointList" class="miniList"></div>
+        <div id="status" class="status">准备加载</div>
+    </section>
+    <div class="badge">Ctrl + 左键拖动原地转向</div>
+</main>
+<script type="importmap">
+{"imports":{"three":"../../node_modules/three/build/three.module.js","three/addons/":"../../node_modules/three/examples/jsm/","three/examples/jsm/":"../../node_modules/three/examples/jsm/","@thatopen/fragments":"../../node_modules/@thatopen/fragments/dist/index.mjs","web-ifc":"../../node_modules/web-ifc/web-ifc-api.js"}}
+</script>
+<script type="module" src="./path-roam.js"></script>
+</body>
+</html>

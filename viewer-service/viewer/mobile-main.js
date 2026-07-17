@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import {OrbitControls} from "three/addons/controls/OrbitControls.js";
 import {FragmentsModels, RenderedFaces} from "@thatopen/fragments";
+import {SemanticQueryEngine} from "./engines/semantic-query-engine.js";
 
 const canvas = document.getElementById("viewerCanvas");
 const fragFile = document.getElementById("fragFile");
@@ -89,6 +90,7 @@ const colorCycle = [
 let fragments;
 let currentModel = null;
 let currentTree = null;
+let semanticEngine = null;
 let currentAllLocalIds = [];
 let currentTreeTab = "models";
 let selectedLocalIds = [];
@@ -144,6 +146,7 @@ async function disposeCurrentModel() {
     await fragments.disposeModel(modelId);
     currentModel = null;
     currentTree = null;
+    semanticEngine = null;
     currentAllLocalIds = [];
     selectedLocalIds = [];
     selectedPrimaryLocalId = null;
@@ -179,10 +182,12 @@ async function loadFragmentsBuffer(buffer, name) {
 
         scene.add(currentModel.object);
         await manager.update(true);
-        currentTree = await currentModel.getSpatialStructure();
+        semanticEngine = new SemanticQueryEngine({model: currentModel});
+        await semanticEngine.init();
+        currentTree = await semanticEngine.getTree(currentTreeTab);
         currentAllLocalIds = await currentModel.getLocalIds();
         itemCount.textContent = `${currentAllLocalIds.length}`;
-        renderTree();
+        await renderTree();
         fitCurrentModel();
         setStatus(`Loaded ${seconds(started)}s`);
         log("Mobile load complete", {
@@ -574,13 +579,23 @@ async function updateOpacity() {
     scheduleFragmentsUpdate();
 }
 
-function renderTree() {
+async function renderTree() {
     modelTree.textContent = "";
     if (!currentModel) {
         treeEmpty.style.display = "block";
         return;
     }
     treeEmpty.style.display = "none";
+    try {
+        if (semanticEngine) {
+            currentTree = await semanticEngine.getTree(currentTreeTab);
+        }
+    } catch (error) {
+        treeEmpty.style.display = "block";
+        treeEmpty.textContent = `${currentTreeTab} tree failed: ${errorMessage(error)}`;
+        log("Mobile tree render failed", {tab: currentTreeTab, message: errorMessage(error)});
+        return;
+    }
     const nodes = getTreeNodes(currentTreeTab).slice(0, 320);
     for (const node of nodes) {
         const button = document.createElement("button");
@@ -602,22 +617,8 @@ function renderTree() {
 }
 
 function getTreeNodes(tab) {
-    if (!currentModel) {
+    if (!currentModel || !currentTree) {
         return [];
-    }
-    if (tab === "models") {
-        return [{
-            label: currentModelLabel || currentModel.modelId,
-            meta: `${currentAllLocalIds.length}`,
-            localIds: currentAllLocalIds,
-            primaryLocalId: currentAllLocalIds[0]
-        }];
-    }
-    if (tab === "classes") {
-        return getClassNodes();
-    }
-    if (tab === "storeys") {
-        return getStoreyNodes();
     }
     return getObjectNodes();
 }
@@ -630,8 +631,8 @@ function getObjectNodes() {
         const localIds = collectTreeLocalIds(item);
         const primaryLocalId = typeof item.localId === "number" ? item.localId : localIds[0];
         result.push({
-            label: `${"  ".repeat(Math.min(depth, 4))}${normalizeIfcLabel(item.category || "Node")}`,
-            meta: primaryLocalId ? `#${primaryLocalId}` : `${localIds.length}`,
+            label: `${"  ".repeat(Math.min(depth, 4))}${item.label || normalizeIfcLabel(item.category || "Node")}`,
+            meta: item.meta || (primaryLocalId ? `#${primaryLocalId}` : `${localIds.length}`),
             localIds,
             primaryLocalId
         });
@@ -642,65 +643,6 @@ function getObjectNodes() {
         }
     }
     return result;
-}
-
-function getClassNodes() {
-    const categories = getCategoriesFromTree();
-    return [...categories.entries()]
-        .sort((a, b) => a[0].localeCompare(b[0]))
-        .map(([category, ids]) => ({
-            label: normalizeIfcLabel(category),
-            meta: `${ids.length}`,
-            localIds: ids,
-            primaryLocalId: ids[0]
-        }));
-}
-
-function getStoreyNodes() {
-    const storeys = [];
-    const stack = currentTree ? [currentTree] : [];
-    while (stack.length) {
-        const item = stack.pop();
-        if (String(item.category || "").toUpperCase().includes("IFCBUILDINGSTOREY")) {
-            const localIds = collectTreeLocalIds(item);
-            storeys.push({
-                label: normalizeIfcLabel(item.category || "Storey"),
-                meta: `${localIds.length}`,
-                localIds,
-                primaryLocalId: typeof item.localId === "number" ? item.localId : localIds[0]
-            });
-        }
-        if (Array.isArray(item.children)) {
-            for (let i = item.children.length - 1; i >= 0; i--) {
-                stack.push(item.children[i]);
-            }
-        }
-    }
-    return storeys;
-}
-
-function getCategoriesFromTree() {
-    const categories = new Map();
-    const stack = currentTree ? [currentTree] : [];
-    while (stack.length) {
-        const item = stack.pop();
-        if (item.category) {
-            const localIds = collectTreeLocalIds(item);
-            if (!categories.has(item.category)) {
-                categories.set(item.category, []);
-            }
-            categories.get(item.category).push(...localIds);
-        }
-        if (Array.isArray(item.children)) {
-            for (let i = item.children.length - 1; i >= 0; i--) {
-                stack.push(item.children[i]);
-            }
-        }
-    }
-    for (const [category, ids] of categories.entries()) {
-        categories.set(category, [...new Set(ids)]);
-    }
-    return categories;
 }
 
 function collectTreeLocalIds(item) {
@@ -906,10 +848,10 @@ sheetTabs.forEach((button) => {
 });
 
 treeTabs.forEach((button) => {
-    button.addEventListener("click", () => {
+    button.addEventListener("click", async () => {
         currentTreeTab = button.dataset.treeTab;
         treeTabs.forEach((tab) => tab.classList.toggle("active", tab === button));
-        renderTree();
+        await renderTree();
     });
 });
 

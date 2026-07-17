@@ -1,0 +1,1864 @@
+/* MVP BIM viewer layout */
+:root {
+    --panel-3: #111416;
+    --line-soft: rgba(255, 255, 255, 0.08);
+    --quiet: #6f7d87;
+    --accent-2: #d7b46a;
+    --focus: #6bbcff;
+    --shadow: rgba(0, 0, 0, 0.34);
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 1px;
+}
+
+.app {
+    display: grid;
+    grid-template-rows: 58px minmax(0, 1fr);
+    width: 100vw;
+    height: 100vh;
+}
+
+.topbar {
+    display: grid;
+    grid-template-columns: 330px minmax(260px, 1fr) auto;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line);
+    background: #15191c;
+    box-shadow: 0 12px 30px var(--shadow);
+    z-index: 2;
+}
+
+.loadbar {
+    display: grid;
+    gap: 6px;
+    min-width: 0;
+}
+
+.mainLoadbar,
+.compareLoadbar {
+    display: grid;
+    gap: 7px;
+    min-width: 0;
+    padding: 8px;
+    border: 1px solid rgba(48, 57, 65, 0.9);
+    border-radius: 6px;
+    background: rgba(10, 14, 16, 0.34);
+}
+
+.mainLoadbar,
+.compareLoadbar {
+    grid-template-columns: 96px minmax(0, 1fr) 76px;
+    grid-auto-rows: 30px;
+    align-items: stretch;
+}
+
+.compareInputRow,
+.compareActionRow {
+    display: contents;
+}
+
+.compareActionRow[hidden] {
+    display: none;
+}
+
+.compareLoadbar .smallBtn,
+.compareLoadbar .primaryBtn,
+.compareFilePicker {
+    min-height: 30px;
+    height: 30px;
+    min-width: 0;
+    padding: 0 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.compareFilePicker {
+    display: grid;
+    place-items: center;
+}
+
+.mainLoadbar .filePicker,
+.mainLoadbar .pathInput,
+.mainLoadbar .primaryBtn {
+    min-height: 30px;
+    height: 30px;
+}
+
+.mainLoadbar .primaryBtn,
+.compareLoadbar .primaryBtn,
+.compareLoadbar .smallBtn {
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mainLoadbar .filePicker {
+    font-size: 12px;
+}
+
+.mainLoadbar .pathInput,
+.compareLoadbar .pathInput {
+    padding: 0 9px;
+}
+
+.compareLoadbar .pathInput {
+    height: 30px;
+}
+
+.compareLoadbarStatus {
+    min-height: 15px;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.35;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.filePicker {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 34px;
+    border: 1px solid #3b454d;
+    border-radius: 5px;
+    background: #20262b;
+    color: var(--text);
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.filePicker:hover {
+    border-color: var(--accent);
+}
+
+.filePicker input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.pathInput {
+    width: 100%;
+    min-width: 0;
+    height: 34px;
+    padding: 0 10px;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    background: #0f1214;
+    color: var(--text);
+}
+
+.primaryBtn {
+    border-color: rgba(67, 209, 158, 0.72);
+    background: #163226;
+}
+
+.secondaryBtn {
+    border-color: rgba(107, 188, 255, 0.66);
+    background: #172a38;
+}
+
+.viewTools {
+    display: flex;
+    gap: 6px;
+}
+
+.iconBtn {
+    width: 42px;
+    min-height: 34px;
+    padding: 0;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0;
+}
+
+.workspace {
+    display: grid;
+    grid-template-columns: 330px minmax(360px, 1fr) 360px;
+    min-height: 0;
+}
+
+.leftPanel,
+.rightPanel {
+    display: grid;
+    gap: 10px;
+    min-width: 0;
+    min-height: 0;
+    padding: 10px;
+    background: var(--panel);
+}
+
+.leftPanel {
+    grid-template-rows: auto minmax(230px, 1fr) minmax(140px, 210px);
+    border-right: 1px solid var(--line);
+}
+
+.rightPanel {
+    grid-template-rows: auto auto minmax(0, 1fr);
+    border-left: 1px solid var(--line);
+}
+
+.panelBlock {
+    min-width: 0;
+    min-height: 0;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--panel-3);
+    overflow: hidden;
+}
+
+.blockHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 9px 10px;
+    border-bottom: 1px solid var(--line);
+    background: #151a1e;
+}
+
+.blockTitle {
+    padding: 9px 10px;
+    color: #dce5eb;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.blockHeader .blockTitle {
+    padding: 0;
+}
+
+.blockActions {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.blockMeta {
+    color: var(--muted);
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.smallBtn {
+    min-height: 26px;
+    padding: 0 9px;
+    font-size: 12px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+    padding: 0 10px 10px;
+}
+
+.stats div,
+.selectionStatus {
+    min-width: 0;
+    padding: 9px;
+    border: 1px solid var(--line-soft);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.stats span,
+.selectionStatus span,
+.viewportHud span {
+    display: block;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.stats strong,
+.selectionStatus strong,
+.viewportHud strong {
+    display: block;
+    margin-top: 4px;
+    overflow: hidden;
+    font-size: 13px;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.treeBlock,
+.logBlock,
+.attrsBlock {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+}
+
+.treeBlock {
+    grid-template-rows: auto auto auto minmax(0, 1fr);
+}
+
+.tree,
+#log,
+.attributeTable {
+    min-height: 0;
+    overflow: auto;
+}
+
+#treeEmpty,
+#attributeEmpty,
+#attributeTable {
+    grid-row: 2;
+}
+
+#treeEmpty,
+#modelTree {
+    grid-row: 4;
+}
+
+.treeTabs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    padding: 8px;
+    border-bottom: 1px solid var(--line);
+    background: #11171a;
+}
+
+.treeTab {
+    min-height: 28px;
+    padding: 0 4px;
+    border-color: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.treeTab.active {
+    border-color: rgba(67, 209, 158, 0.72);
+    background: rgba(67, 209, 158, 0.12);
+    color: var(--text);
+}
+
+.treeSearchPanel {
+    display: grid;
+    gap: 6px;
+    padding: 8px;
+    border-bottom: 1px solid var(--line);
+    background: #0f1518;
+}
+
+.treeSearchRow {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 6px;
+}
+
+.treeSearchInput {
+    width: 100%;
+    min-width: 0;
+    height: 30px;
+    padding: 0 9px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    outline: none;
+    background: #0b1012;
+    color: var(--text);
+    font: 12px/1.3 inherit;
+}
+
+.treeSearchInput:focus {
+    border-color: rgba(67, 209, 158, 0.72);
+    box-shadow: 0 0 0 2px rgba(67, 209, 158, 0.08);
+}
+
+.treeSearchInput:disabled {
+    color: var(--quiet);
+    cursor: not-allowed;
+}
+
+.treeSearchStatus {
+    overflow: hidden;
+    color: var(--quiet);
+    font-size: 11px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.treeSearchResults {
+    grid-row: 4;
+    min-height: 0;
+    overflow: auto;
+    padding: 8px 6px 12px;
+}
+
+.treeVirtualViewport,
+.treeSearchVirtualViewport {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    overflow: auto;
+}
+
+.treeVirtualSpacer,
+.treeSearchVirtualSpacer {
+    width: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.treeVirtualContent,
+.treeSearchVirtualContent {
+    position: absolute;
+    inset: 0 0 auto 0;
+}
+
+.treeVirtualNode {
+    margin: 0;
+}
+
+.treeSearchVirtualViewport {
+    padding: 8px 6px 12px;
+}
+
+.treeSearchResult {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 6px;
+    width: 100%;
+    min-height: 34px;
+    margin: 2px 0;
+    padding: 5px 7px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--text);
+    text-align: left;
+}
+
+.treeSearchResult:hover {
+    border-color: #3a444b;
+    background: #1b2125;
+}
+
+.treeSearchResult strong,
+.treeSearchResult span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.treeSearchResult strong {
+    font-size: 12px;
+}
+
+.treeSearchResult span {
+    color: var(--quiet);
+    font-size: 11px;
+}
+
+.treeSearchBadge {
+    align-self: center;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.emptyState {
+    padding: 16px 12px;
+    color: var(--quiet);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.tree {
+    padding: 8px 6px 12px;
+}
+
+.tree ul {
+    margin: 0;
+    padding-left: 14px;
+    list-style: none;
+}
+
+.treeChildren.collapsed {
+    display: none;
+}
+
+.tree li {
+    margin: 2px 0;
+}
+
+.treeNode {
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+    min-height: 27px;
+    padding: 0 6px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--text);
+    text-align: left;
+}
+
+.treeNode:hover {
+    border-color: #3a444b;
+    background: #1b2125;
+}
+
+.treeNode.active {
+    border-color: rgba(67, 209, 158, 0.65);
+    background: rgba(67, 209, 158, 0.1);
+}
+
+.treeNode.pending {
+    border-color: rgba(216, 180, 93, 0.7);
+    background: rgba(216, 180, 93, 0.12);
+    cursor: progress;
+}
+
+.treeToggle {
+    color: var(--muted);
+    font-size: 11px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.treeName {
+    overflow: hidden;
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.treeId {
+    color: var(--quiet);
+    font-size: 11px;
+}
+
+.treeLoadMore {
+    width: 100%;
+    min-height: 28px;
+    margin: 3px 0;
+    border-color: rgba(107, 188, 255, 0.24);
+    background: rgba(107, 188, 255, 0.07);
+    color: #b9d9f3;
+    font-size: 12px;
+    text-align: left;
+}
+
+#log {
+    margin: 0;
+    padding: 10px;
+    color: #cbd6de;
+    font-size: 11px;
+    line-height: 1.45;
+    white-space: pre-wrap;
+}
+
+.viewport {
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+    height: auto;
+    --bubble-bg: rgba(15, 18, 20, 0.88);
+    --bubble-bg-hover: rgba(25, 29, 31, 0.96);
+    --bubble-border: rgba(107, 188, 255, 0.72);
+    --bubble-text: #d7ecff;
+    --bubble-muted: #93a1ad;
+    --bubble-shadow: rgba(0, 0, 0, 0.32);
+    --bubble-radius: 6px;
+    --bubble-font-size: 12px;
+    --bubble-custom-bg: rgba(13, 17, 20, 0.9);
+    --bubble-custom-bg-hover: rgba(21, 26, 30, 0.96);
+    --bubble-custom-text: #eef6ff;
+    --bubble-custom-muted: #a5b0b8;
+    --bubble-custom-border: #6bbcff;
+    --bubble-custom-radius: 6px;
+    --bubble-custom-shadow: rgba(0, 0, 0, 0.34);
+    --bubble-custom-font-size: 12px;
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+        #0c0f11;
+    background-size: 48px 48px;
+}
+
+.viewport.bubbleStyle-default {
+    --bubble-bg: rgba(15, 18, 20, 0.88);
+    --bubble-bg-hover: rgba(25, 29, 31, 0.96);
+    --bubble-border: rgba(107, 188, 255, 0.72);
+    --bubble-text: #d7ecff;
+    --bubble-muted: #93a1ad;
+    --bubble-shadow: rgba(0, 0, 0, 0.32);
+}
+
+.viewport.bubbleStyle-blue {
+    --bubble-bg: rgba(7, 20, 32, 0.9);
+    --bubble-bg-hover: rgba(9, 31, 49, 0.96);
+    --bubble-border: rgba(93, 174, 255, 0.8);
+    --bubble-text: #e1f2ff;
+    --bubble-muted: #9fc0d8;
+    --bubble-shadow: rgba(0, 20, 38, 0.38);
+}
+
+.viewport.bubbleStyle-warning {
+    --bubble-bg: rgba(35, 24, 9, 0.91);
+    --bubble-bg-hover: rgba(48, 32, 11, 0.96);
+    --bubble-border: rgba(241, 184, 75, 0.82);
+    --bubble-text: #ffe8bb;
+    --bubble-muted: #d2b781;
+    --bubble-shadow: rgba(30, 17, 0, 0.38);
+}
+
+.viewport.bubbleStyle-light {
+    --bubble-bg: rgba(244, 248, 250, 0.92);
+    --bubble-bg-hover: rgba(255, 255, 255, 0.98);
+    --bubble-border: rgba(64, 119, 158, 0.6);
+    --bubble-text: #17232c;
+    --bubble-muted: #536573;
+    --bubble-shadow: rgba(3, 12, 18, 0.22);
+}
+
+.viewport.bubbleStyle-contrast {
+    --bubble-bg: rgba(0, 0, 0, 0.96);
+    --bubble-bg-hover: rgba(0, 0, 0, 0.98);
+    --bubble-border: rgba(255, 255, 255, 0.9);
+    --bubble-text: #ffffff;
+    --bubble-muted: #d8dee4;
+    --bubble-shadow: rgba(0, 0, 0, 0.5);
+}
+
+.viewport.bubbleStyle-custom {
+    --bubble-bg: var(--bubble-custom-bg);
+    --bubble-bg-hover: var(--bubble-custom-bg-hover);
+    --bubble-border: var(--bubble-custom-border);
+    --bubble-text: var(--bubble-custom-text);
+    --bubble-muted: var(--bubble-custom-muted);
+    --bubble-shadow: var(--bubble-custom-shadow);
+    --bubble-radius: var(--bubble-custom-radius);
+    --bubble-font-size: var(--bubble-custom-font-size);
+}
+
+#viewerCanvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.crosshair {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 22px;
+    height: 22px;
+    border-left: 1px solid rgba(255, 255, 255, 0.16);
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    transform: translate(-50%, -50%) rotate(45deg);
+    pointer-events: none;
+}
+
+.viewportHud {
+    position: absolute;
+    left: 14px;
+    bottom: 58px;
+    display: flex;
+    gap: 8px;
+    max-width: min(520px, calc(100% - 292px));
+    pointer-events: none;
+}
+
+.exitActiveToolBtn {
+    position: absolute;
+    right: 14px;
+    top: 14px;
+    z-index: 32;
+    display: grid;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    place-items: center;
+    border: 1px solid rgba(255, 104, 104, 0.5);
+    border-radius: 5px;
+    background: rgba(35, 17, 18, 0.9);
+    color: #ffd6d6;
+    font-size: 23px;
+    line-height: 1;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px);
+}
+
+.exitActiveToolBtn:hover {
+    border-color: rgba(255, 104, 104, 0.82);
+    background: rgba(66, 24, 27, 0.96);
+}
+
+.exitActiveToolBtn[hidden] {
+    display: none;
+}
+
+.dualViewGuide {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    bottom: 16px;
+    width: min(38%, calc(100% - 32px));
+    min-width: 260px;
+    border: 1px solid rgba(67, 209, 158, 0.62);
+    border-radius: 6px;
+    box-shadow: inset 0 0 0 1px rgba(7, 10, 12, 0.68), 0 16px 44px rgba(0, 0, 0, 0.34);
+    pointer-events: none;
+}
+
+body.dualViewSplitMode .dualViewGuide {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 50%;
+    width: auto;
+    min-width: 0;
+    border: 0;
+    border-left: 1px solid rgba(67, 209, 158, 0.86);
+    border-radius: 0;
+    box-shadow: -1px 0 0 rgba(7, 10, 12, 0.75);
+}
+
+.dualViewGuide::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background:
+        linear-gradient(90deg, rgba(67, 209, 158, 0.16), transparent 22%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 18%);
+}
+
+body.dualViewSplitMode .dualViewGuide::before {
+    background:
+        linear-gradient(90deg, rgba(67, 209, 158, 0.14), transparent 8%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 14%);
+}
+
+.dualViewTitle,
+.dualViewMeta {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    margin-left: 10px;
+    padding: 3px 7px;
+    border: 1px solid rgba(67, 209, 158, 0.38);
+    background: rgba(10, 13, 15, 0.82);
+    color: var(--text);
+    font-size: 12px;
+    line-height: 1.3;
+}
+
+.dualViewTitle {
+    margin-top: 10px;
+    font-weight: 650;
+}
+
+.dualViewMeta {
+    margin-left: 6px;
+    color: var(--muted);
+}
+
+.viewportHud > div {
+    min-width: 112px;
+    max-width: 260px;
+    padding: 8px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 5px;
+    background: rgba(12, 15, 17, 0.78);
+    backdrop-filter: blur(8px);
+}
+
+.selectionRect {
+    position: absolute;
+    z-index: 4;
+    border: 1px solid rgba(107, 188, 255, 0.9);
+    background: rgba(107, 188, 255, 0.16);
+    pointer-events: none;
+}
+
+.viewerOverlay {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.snapTypeHint {
+    position: absolute;
+    z-index: 24;
+    transform: translate(8px, calc(-100% - 7px));
+    padding: 2px 5px;
+    border: 1px solid rgba(245, 158, 11, 0.72);
+    border-radius: 3px;
+    background: rgba(12, 15, 17, 0.9);
+    color: #f8fafc;
+    font-size: 10px;
+    line-height: 1.2;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+}
+
+.snapTypeHint[data-snap-type="point"] {
+    border-color: rgba(34, 211, 238, 0.85);
+    color: #a5f3fc;
+}
+
+.snapTypeHint[data-snap-type="midpoint"] {
+    border-color: rgba(167, 139, 250, 0.85);
+    color: #ddd6fe;
+}
+
+.snapTypeHint[data-snap-type="edge"] {
+    border-color: rgba(251, 191, 36, 0.85);
+    color: #fde68a;
+}
+
+.measureLabel,
+.modelLabel {
+    position: absolute;
+    transform: translate(-50%, -100%);
+    min-width: 0;
+    max-width: 220px;
+    padding: 5px 7px;
+    border: 1px solid rgba(215, 180, 106, 0.75);
+    border-radius: var(--bubble-radius);
+    background: rgba(15, 18, 20, 0.88);
+    color: #f4e2bd;
+    font-size: var(--bubble-font-size);
+    line-height: 1.3;
+    white-space: nowrap;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(8px);
+    pointer-events: auto;
+}
+
+.measureLabel {
+    z-index: 6;
+    pointer-events: none;
+}
+
+.measureLabelPreview {
+    opacity: 0.88;
+    border-style: dashed;
+}
+
+.measureResultHud {
+    position: absolute;
+    right: 14px;
+    bottom: 14px;
+    z-index: 20;
+    max-width: min(320px, calc(100% - 28px));
+    padding: 8px 10px;
+    border: 1px solid rgba(215, 180, 106, 0.7);
+    border-radius: 6px;
+    background: rgba(15, 18, 20, 0.88);
+    color: #f4e2bd;
+    font-size: 13px;
+    line-height: 1.35;
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.32);
+    backdrop-filter: blur(8px);
+    pointer-events: none;
+}
+
+.modelLabel {
+    border-color: var(--bubble-border);
+    background: var(--bubble-bg);
+    color: var(--bubble-text);
+    box-shadow: 0 10px 24px var(--bubble-shadow);
+    cursor: pointer;
+}
+
+.modelLabel.bubbleSecondary,
+.annotationMarker.bubbleSecondary {
+    opacity: 0.48;
+    filter: saturate(0.75);
+}
+
+.modelLabel.bubbleSecondary:hover,
+.annotationMarker.bubbleSecondary:hover {
+    opacity: 0.86;
+}
+
+.modelLabelTitle {
+    overflow: hidden;
+    font-weight: 700;
+    text-overflow: ellipsis;
+}
+
+.modelLabelSub {
+    margin-top: 2px;
+    overflow: hidden;
+    color: var(--bubble-muted);
+    font-size: 11px;
+    text-overflow: ellipsis;
+}
+
+.annotationMarker {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 4;
+    display: grid;
+    grid-template-columns: 10px minmax(0, 1fr);
+    gap: 7px;
+    align-items: start;
+    max-width: 260px;
+    min-height: 34px;
+    padding: 7px 9px;
+    border: 1px solid var(--bubble-border);
+    border-radius: var(--bubble-radius);
+    background: var(--bubble-bg);
+    color: var(--bubble-text);
+    box-shadow: 0 10px 26px var(--bubble-shadow);
+    cursor: pointer;
+    pointer-events: auto;
+    text-align: left;
+}
+
+.annotationMarker:hover {
+    border-color: var(--bubble-border);
+    background: var(--bubble-bg-hover);
+}
+
+.annotationMarker.resolved {
+    opacity: 0.78;
+}
+
+.annotationMarkerDot {
+    width: 9px;
+    height: 9px;
+    margin-top: 4px;
+    border-radius: 50%;
+    background: #d8b45d;
+    box-shadow: 0 0 0 3px rgba(216, 180, 93, 0.14);
+}
+
+.annotationMarkerDot.status-processing {
+    background: #6bbcff;
+    box-shadow: 0 0 0 3px rgba(107, 188, 255, 0.14);
+}
+
+.annotationMarkerDot.status-resolved {
+    background: #43d19e;
+    box-shadow: 0 0 0 3px rgba(67, 209, 158, 0.14);
+}
+
+.annotationMarkerDot.status-closed {
+    background: #9aa4ad;
+    box-shadow: 0 0 0 3px rgba(154, 164, 173, 0.14);
+}
+
+.annotationMarkerBody {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+}
+
+.annotationMarkerTitle {
+    overflow: hidden;
+    color: var(--bubble-text);
+    font-size: var(--bubble-font-size);
+    font-weight: 700;
+    line-height: 1.3;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.annotationMarkerMeta {
+    overflow: hidden;
+    color: var(--bubble-muted);
+    font-size: 11px;
+    line-height: 1.25;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.bubbleCluster {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 7;
+    pointer-events: auto;
+}
+
+.bubbleClusterButton {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 1px solid rgba(67, 209, 158, 0.76);
+    border-radius: 50%;
+    background: rgba(14, 20, 21, 0.9);
+    color: #dffff3;
+    font-size: 12px;
+    font-weight: 800;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.36), 0 0 0 5px rgba(67, 209, 158, 0.12);
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+}
+
+.bubbleClusterButton:hover {
+    border-color: rgba(216, 180, 93, 0.9);
+    color: #ffe9b8;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.42), 0 0 0 5px rgba(216, 180, 93, 0.14);
+}
+
+.bubbleClusterPanel {
+    position: absolute;
+    left: 40px;
+    top: 50%;
+    display: grid;
+    gap: 4px;
+    width: 190px;
+    max-height: 238px;
+    overflow: auto;
+    padding: 7px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 6px;
+    background: rgba(12, 15, 17, 0.92);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.42);
+    transform: translateY(-50%);
+    backdrop-filter: blur(10px);
+}
+
+.bubbleClusterItem {
+    min-width: 0;
+    min-height: 26px;
+    overflow: hidden;
+    padding: 0 7px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text);
+    font-size: 11px;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.bubbleClusterItem:hover {
+    border-color: rgba(67, 209, 158, 0.52);
+    background: rgba(67, 209, 158, 0.1);
+}
+
+.bubbleClusterMore {
+    padding: 4px 7px;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.bubbleClusterStatus {
+    margin-top: -3px;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.35;
+}
+
+.snapMarker {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(67, 209, 158, 0.98);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(67, 209, 158, 0.16);
+    box-shadow: 0 0 0 4px rgba(67, 209, 158, 0.1);
+    animation: snapPulse 1.15s ease-out infinite;
+    pointer-events: none;
+}
+
+.snapMarker::before,
+.snapMarker::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    background: rgba(67, 209, 158, 0.95);
+    transform: translate(-50%, -50%);
+}
+
+.snapMarker::before {
+    width: 2px;
+    height: 24px;
+}
+
+.snapMarker::after {
+    width: 24px;
+    height: 2px;
+}
+
+@keyframes snapPulse {
+    0% {
+        box-shadow: 0 0 0 3px rgba(67, 209, 158, 0.24);
+    }
+    100% {
+        box-shadow: 0 0 0 12px rgba(67, 209, 158, 0);
+    }
+}
+
+.contextMenu {
+    position: absolute;
+    z-index: 5;
+    min-width: 190px;
+    max-width: 260px;
+    padding: 5px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: rgba(17, 20, 22, 0.96);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.36);
+}
+
+.contextMenuHit {
+    display: grid;
+    gap: 3px;
+    padding: 5px 7px 6px;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.35;
+}
+
+.contextMenuHit strong {
+    overflow: hidden;
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 650;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.contextMenuHit span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.contextMenu button {
+    display: block;
+    width: 100%;
+    min-height: 28px;
+    padding: 0 8px;
+    border-color: transparent;
+    background: transparent;
+    text-align: left;
+}
+
+.contextMenu button:hover {
+    background: #20282e;
+}
+
+.contextMenu button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.contextMenu button:disabled:hover {
+    background: transparent;
+}
+
+.contextMenuSeparator {
+    height: 1px;
+    margin: 4px 0;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.selectedBlock {
+    padding-bottom: 10px;
+}
+
+.selectionStatus {
+    margin: 0 10px 10px;
+}
+
+.actionsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    padding: 0 10px 8px;
+}
+
+.toolHint {
+    margin: -2px 10px 8px;
+    padding: 7px 8px;
+    border: 1px solid rgba(107, 188, 255, 0.38);
+    border-radius: 5px;
+    background: rgba(107, 188, 255, 0.1);
+    color: #cfeaff;
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+.toolHint.warning {
+    border-color: rgba(239, 111, 108, 0.62);
+    background: rgba(239, 111, 108, 0.12);
+    color: #ffd6d4;
+}
+
+.rangeRow {
+    display: grid;
+    grid-template-columns: 54px minmax(0, 1fr) 46px;
+    align-items: center;
+    gap: 8px;
+    padding: 0 10px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.rangeRow input {
+    width: 100%;
+}
+
+.rangeRow strong {
+    color: var(--text);
+    text-align: right;
+}
+
+.isolateModeRow {
+    display: grid;
+    grid-template-columns: 54px minmax(0, 1fr);
+    gap: 8px;
+    align-items: center;
+    margin: 0 10px 8px;
+    padding: 7px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.isolateModeRow[hidden],
+.isolateOpacityRow[hidden] {
+    display: none;
+}
+
+.isolateModeRow span {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.isolateModeRow select {
+    width: 100%;
+    min-width: 0;
+    height: 28px;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    background: #0f1214;
+    color: var(--text);
+    font-size: 12px;
+}
+
+.isolateModeRow select:disabled {
+    color: #62707b;
+    cursor: not-allowed;
+}
+
+.isolateOpacityRow {
+    display: grid;
+    grid-template-columns: 58px minmax(0, 1fr) 42px;
+    gap: 8px;
+    align-items: center;
+    margin: -2px 10px 8px;
+    padding: 7px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.isolateOpacityRow span {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.isolateOpacityRow input {
+    width: 100%;
+}
+
+.isolateOpacityRow strong {
+    color: var(--text);
+    font-size: 12px;
+    text-align: right;
+}
+
+.sectionDragRow {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr) 40px;
+    gap: 7px;
+    align-items: center;
+    margin: -2px 10px 10px;
+    padding: 6px 7px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.sectionDragRow span {
+    color: var(--muted);
+    font-size: 12px;
+    text-align: left;
+}
+
+.sectionDragRow input {
+    width: 100%;
+    min-width: 0;
+    accent-color: var(--accent);
+}
+
+.sectionDragRow strong {
+    overflow: hidden;
+    color: var(--text);
+    font-size: 12px;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sectionCompactPanel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 7px;
+    margin: 0 10px 8px;
+}
+
+.sectionControlField {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+}
+
+.sectionControlField span {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.sectionControlField select {
+    width: 100%;
+    min-width: 0;
+    height: 30px;
+    padding: 0 8px;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    background: #0f1214;
+    color: var(--text);
+    font-size: 12px;
+}
+
+.toolSubTitle {
+    margin: 8px 10px 6px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.roamSpeedRow {
+    display: grid;
+    grid-template-columns: 58px minmax(0, 1fr) 42px;
+    gap: 8px;
+    align-items: center;
+    margin: 7px 10px 8px;
+    padding: 6px 7px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.roamSpeedRow[hidden] {
+    display: none;
+}
+
+body:has(.viewport.roamMode) .roamSpeedRow,
+.roamSpeedRow:not([hidden]) {
+    border-color: rgba(67, 209, 158, 0.42);
+    background: rgba(67, 209, 158, 0.08);
+}
+
+.roamSpeedRow span {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.roamSpeedRow input {
+    width: 100%;
+    min-width: 0;
+    accent-color: var(--accent);
+}
+
+.roamSpeedRow strong {
+    color: var(--text);
+    font-size: 12px;
+    text-align: right;
+}
+
+.modelTransformPanel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 7px;
+    margin: 0 10px 8px;
+}
+
+.modelTransformPanel > button {
+    min-height: 30px;
+    padding: 0 7px;
+    font-size: 12px;
+}
+
+.modelAssemblyPanel {
+    position: absolute;
+    left: 16px;
+    bottom: 16px;
+    z-index: 26;
+    display: grid;
+    width: min(420px, calc(100% - 32px));
+    gap: 8px;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 6px;
+    background: rgba(12, 15, 17, 0.9);
+    box-shadow: 0 16px 42px rgba(0, 0, 0, 0.38);
+    backdrop-filter: blur(10px);
+}
+
+.modelAssemblyPanel[hidden] {
+    display: none;
+}
+
+.modelAssemblyHeader,
+.modelAssemblyTopRow {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    align-items: center;
+}
+
+.modelAssemblyHeader strong {
+    overflow: hidden;
+    color: var(--text);
+    font-size: 13px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.modelAssemblyHeader button,
+.modelAssemblyTopRow button {
+    min-height: 28px;
+    padding: 0 8px;
+    font-size: 12px;
+}
+
+.modelTransformField {
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 6px;
+    align-items: center;
+    min-width: 0;
+}
+
+.modelTransformField span {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.modelTransformField select {
+    width: 100%;
+    min-width: 0;
+    height: 30px;
+    padding: 0 8px;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    background: #0f1214;
+    color: var(--text);
+    font-size: 12px;
+}
+
+.modelTransformStatus {
+    grid-column: 1 / -1;
+    min-height: 16px;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.modelTransformNumeric {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 42px repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    align-items: center;
+}
+
+.modelTransformNumericTitle {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.modelTransformNumeric label {
+    display: grid;
+    grid-template-columns: 20px minmax(0, 1fr);
+    gap: 4px;
+    align-items: center;
+    min-width: 0;
+}
+
+.modelTransformNumeric label span {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.modelTransformNumeric input {
+    width: 100%;
+    min-width: 0;
+    height: 28px;
+    padding: 0 5px;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    background: #0f1214;
+    color: var(--text);
+    font-size: 12px;
+}
+
+.modelTransformActions {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+}
+
+.modelTransformActions button {
+    min-height: 28px;
+    padding: 0 6px;
+    font-size: 12px;
+}
+
+.pathRoamPanel {
+    position: absolute;
+    left: 16px;
+    top: 86px;
+    z-index: 25;
+    display: grid;
+    width: min(360px, calc(100% - 32px));
+    gap: 8px;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 6px;
+    background: rgba(12, 15, 17, 0.9);
+    box-shadow: 0 16px 42px rgba(0, 0, 0, 0.38);
+    backdrop-filter: blur(10px);
+    pointer-events: auto;
+}
+
+.pathRoamPanel[hidden] {
+    display: none;
+}
+
+.pathRoamHeader {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    align-items: center;
+}
+
+.pathRoamHeader strong {
+    overflow: hidden;
+    color: var(--text);
+    font-size: 13px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pathRoamHeader button {
+    min-height: 28px;
+    padding: 0 8px;
+    font-size: 12px;
+}
+
+.pathRoamRouteControls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) repeat(3, 46px);
+    gap: 6px;
+    align-items: center;
+}
+
+.pathRoamRouteControls label {
+    display: grid;
+    grid-template-columns: 30px minmax(0, 1fr);
+    gap: 5px;
+    align-items: center;
+    min-width: 0;
+}
+
+.pathRoamRouteControls span {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.pathRoamRouteControls select,
+.pathRoamRouteControls input {
+    width: 100%;
+    min-width: 0;
+    height: 28px;
+    padding: 0 7px;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    background: #0f1214;
+    color: var(--text);
+    font-size: 12px;
+}
+
+.pathRoamRouteControls button {
+    min-width: 0;
+    min-height: 28px;
+    padding: 0 5px;
+    font-size: 11px;
+}
+
+.pathRoamActions {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 7px;
+}
+
+.pathRoamActions button {
+    min-height: 28px;
+    padding: 0 5px;
+    font-size: 12px;
+}
+
+.pathRoamSpeedRow {
+    display: grid;
+    grid-template-columns: 58px minmax(0, 1fr) 44px;
+    gap: 8px;
+    align-items: center;
+    min-height: 30px;
+    padding: 0 8px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.pathRoamSpeedRow span,
+.pathRoamStatus,
+.pathRoamEmpty,
+.pathRoamPointMeta {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.pathRoamSpeedRow input {
+    width: 100%;
+    min-width: 0;
+    accent-color: var(--accent);
+}
+
+.pathRoamSpeedRow strong {
+    color: var(--text);
+    font-size: 11px;
+    text-align: right;
+}
+
+.pathRoamStatus {
+    overflow: hidden;
+    min-height: 16px;
+    line-height: 1.4;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pathRoamList {
+    display: grid;
+    gap: 6px;
+    max-height: 190px;
+    overflow: auto;
+}
+
+.pathRoamEmpty {
+    padding: 8px;
+    border: 1px dashed rgba(255, 255, 255, 0.12);
+    border-radius: 5px;
+}
+
+.pathRoamPointItem {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 7px;
+    align-items: start;
+    padding: 7px;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.035);
+}
+
+.pathRoamPointBody {
+    display: grid;
+    gap: 5px;
+    min-width: 0;
+}
+
+.pathRoamPointNameInput {
+    width: 100%;
+    min-width: 0;
+    height: 26px;
+    padding: 0 7px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    background: rgba(16, 20, 23, 0.96);
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.pathRoamPointMeta {
+    display: grid;
+    grid-template-columns: 86px minmax(0, 1fr);
+    gap: 6px;
+    align-items: center;
+    margin-top: 2px;
+}
+
+.pathRoamPointTime {
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr);
+    gap: 4px;
+    align-items: center;
+}
+
+.pathRoamPointTime input {
+    width: 100%;
+    min-width: 0;
+    height: 24px;
+    padding: 0 5px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    background: rgba(16, 20, 23, 0.96);
+    color: var(--text);
+    font-size: 11px;
+}
+
+.pathRoamStateBadges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    min-width: 0;
+}
+
+.pathRoamStateBadges span {
+    padding: 2px 5px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    color: rgba(165, 176, 184, 0.7);
+    font-size: 10px;
+    line-height: 1.2;
+}
+
+.pathRoamStateBadges span.active {
+    border-color: rgba(67, 209, 158, 0.42);
+    background: rgba(67, 209, 158, 0.1);
+    color: #c9f7e7;
+}
+
+.pathRoamPointActions {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 5px;
+}
+
+.pathRoamPointActions button {
+    min-height: 26px;
+    min-width: 0;
+    padding: 0 4px;
+    font-size: 11px;
+}
+
+.compactGrid {
+    grid-template-columns: 1fr 1fr;
+}
+
+.bimToolGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.bimToolGrid button {
+    min-height: 30px;
+    padding: 0 5px;
+    font-size: 12px;
+}
+
+.compactGrid button.active {
+    border-color: rgba(67, 209, 158, 0.72);
+    background: rgba(67, 209, 158, 0.14);
+    color: var(--text);
+}
+
+.viewportInner.roamMode,
+.viewportInner.roamMode canvas {
+    cursor: crosshair;
+}
+
+.viewportInner.pathRoamMode,
+.viewportInner.pathRoamMode canvas {
+    cursor: progress;
+}
+
+.propsList {
+    display: grid;
+    gap: 1px;
+    margin: 0;
+    padding: 0 10px 10px;
+}
+
+.miniPanel {
+    margin: 0 10px 10px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.miniPanelHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 7px;
+    color: #dce5eb;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.miniHeaderActions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 5px;
+}
+
+.miniList {
+    display: grid;
+    gap: 6px;
+    max-height: 150px;
+    min-height: 32px;
+    overflow: auto;
+}

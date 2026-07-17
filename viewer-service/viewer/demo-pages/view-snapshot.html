@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>视点保存、恢复与快照</title>
+    <link rel="stylesheet" href="./common.css">
+</head>
+<body>
+<main class="page">
+    <div class="viewer"><canvas id="viewerCanvas"></canvas></div>
+    <section class="panel compact">
+        <div class="title">
+            <div class="eyebrow">REQ-007</div>
+            <h1>视点保存、恢复与快照</h1>
+            <p>只实现当前视角保存、恢复和截图下载。</p>
+        </div>
+        <div class="actions">
+            <button id="saveViewBtn" type="button">保存视点</button>
+            <button id="restoreViewBtn" type="button">恢复视点</button>
+            <button id="snapshotBtn" type="button">截图</button>
+        </div>
+        <div id="status" class="status">准备加载</div>
+    </section>
+</main>
+<script type="importmap">
+{"imports":{"three":"../../node_modules/three/build/three.module.js","three/addons/":"../../node_modules/three/examples/jsm/","three/examples/jsm/":"../../node_modules/three/examples/jsm/","@thatopen/fragments":"../../node_modules/@thatopen/fragments/dist/index.mjs","web-ifc":"../../node_modules/web-ifc/web-ifc-api.js"}}
+</script>
+<script type="module" src="./view-snapshot.js"></script>
+</body>
+</html>

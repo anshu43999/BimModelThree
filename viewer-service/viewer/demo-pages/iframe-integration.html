@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>第三方 iframe 集成</title>
+    <link rel="stylesheet" href="./common.css">
+</head>
+<body>
+<main class="page embedPage">
+    <section class="embedHostPanel" aria-label="第三方系统控制台">
+        <div class="title">
+            <div class="eyebrow">REQ-009</div>
+            <h1>第三方 iframe 集成</h1>
+            <p>这个页面模拟业务系统作为宿主，通过 BimViewerEmbedClient 控制右侧 iframe Viewer。</p>
+        </div>
+
+        <div class="field">
+            <label for="manifestInput">Manifest URL</label>
+            <input id="manifestInput" type="text" value="/converted/manifest.json">
+        </div>
+
+        <div class="actions">
+            <button id="loadBtn" type="button">加载模型</button>
+            <button id="stateBtn" type="button">获取状态</button>
+            <button id="snapshotBtn" type="button">快照</button>
+        </div>
+
+        <div class="actions">
+            <button id="fitBtn" type="button">适配</button>
+            <button id="isoBtn" type="button">等轴</button>
+            <button id="topBtn" type="button">顶视</button>
+            <button id="clearBtn" type="button">清空选择</button>
+        </div>
+
+        <div class="actions">
+            <button id="saveViewBtn" type="button">保存视点</button>
+            <button id="restoreViewBtn" type="button">恢复视点</button>
+        </div>
+
+        <div class="field">
+            <label for="localIdsInput">业务系统传入 localId</label>
+            <input id="localIdsInput" type="text" placeholder="例如 123 或 123,456">
+        </div>
+        <div class="actions">
+            <button id="selectBtn" type="button">选中构件</button>
+            <button id="fitSelectionBtn" type="button">适配选中</button>
+        </div>
+
+        <div class="field">
+            <label for="globalIdsInput">业务系统传入 GlobalId</label>
+            <input id="globalIdsInput" type="text" placeholder="例如 1kTvK5... 或多个用逗号分隔">
+        </div>
+        <div class="actions">
+            <button id="selectGlobalBtn" type="button">按 GlobalId 选中</button>
+            <button id="itemInfoBtn" type="button">获取构件信息</button>
+        </div>
+
+        <div class="actions">
+            <button id="hideSelectedBtn" type="button">隐藏选中</button>
+            <button id="isolateSelectedBtn" type="button">隔离选中</button>
+            <button id="colorSelectedBtn" type="button">着色选中</button>
+            <button id="showAllBtn" type="button">显示全部</button>
+        </div>
+
+        <div class="field">
+            <label for="labelTitleInput">业务标签标题</label>
+            <input id="labelTitleInput" type="text" value="业务标签">
+        </div>
+        <div class="field">
+            <label for="annotationContentInput">业务批注内容</label>
+            <textarea id="annotationContentInput">第三方系统创建的批注</textarea>
+        </div>
+        <div class="actions">
+            <button id="createLabelBtn" type="button">创建标签</button>
+            <button id="createAnnotationBtn" type="button">创建批注</button>
+        </div>
+        <div class="actions">
+            <button id="listLabelsBtn" type="button">查询标签</button>
+            <button id="removeLastLabelBtn" type="button">删除最近标签</button>
+            <button id="listAnnotationsBtn" type="button">查询批注</button>
+            <button id="removeLastAnnotationBtn" type="button">删除最近批注</button>
+        </div>
+
+        <dl class="statusGrid">
+            <div>
+                <dt>连接状态</dt>
+                <dd id="readyState">初始化中</dd>
+            </div>
+            <div>
+                <dt>模型</dt>
+                <dd id="modelState">-</dd>
+            </div>
+            <div>
+                <dt>选择</dt>
+                <dd id="selectionState">-</dd>
+            </div>
+            <div>
+                <dt>协议</dt>
+                <dd>bim-viewer:v1</dd>
+            </div>
+        </dl>
+
+        <pre id="eventLog" class="commandLog">等待 Viewer ready...</pre>
+    </section>
+
+    <section class="embedViewerPane" aria-label="iframe Viewer">
+        <iframe id="viewerFrame" title="iframe BIM Viewer"></iframe>
+    </section>
+</main>
+<script type="module" src="./iframe-integration.js"></script>
+</body>
+</html>
